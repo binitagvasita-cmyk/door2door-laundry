@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Door2Door Laundry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/header.css" />
+  </head>
+  <body>
+    <header class="site-header" id="siteHeader">
+      <div class="header-inner">
+        <!-- ══ LOGO (left via margin-right:auto on .logo) ══ -->
+        <a href="index.html" class="logo" aria-label="Door2Door Laundry Home">
+          <div class="logo-img-wrap">
+            <!-- Real logo — 58×58 as per CSS -->
+            <img
+              src="assets/images/logo.png"
+              alt="Door2Door Laundry logo"
+              class="logo-img"
+              id="logoImg"
+              onerror="this.style.display='none';document.getElementById('logoFallback').style.display='flex';"
+            />
+
+            <!-- SVG fallback if logo.png missing -->
+            <div class="logo-fallback" id="logoFallback" style="display: none">
+              <svg
+                width="52"
+                height="52"
+                viewBox="0 0 52 52"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="52" height="52" rx="14" fill="#42BABC" />
+                <ellipse
+                  cx="26"
+                  cy="20"
+                  rx="10"
+                  ry="5"
+                  stroke="white"
+                  stroke-width="2.2"
+                  fill="none"
+                />
+                <path
+                  d="M16 20 Q16 36 26 36 Q36 36 36 20"
+                  stroke="white"
+                  stroke-width="2.2"
+                  fill="none"
+                />
+                <circle cx="26" cy="30" r="4" fill="white" opacity="0.75" />
+                <path
+                  d="M23 30 l2.5 2.5 l5-5"
+                  stroke="#42BABC"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+
+            <!-- Animated dashed ring -->
+            <div class="logo-ring"></div>
+
+            <!-- Floating soap bubbles -->
+            <span class="bubble b1"></span>
+            <span class="bubble b2"></span>
+            <span class="bubble b3"></span>
+          </div>
+
+          <div class="logo-text">
+            <span class="logo-main"
+              >Door<span class="logo-accent">2</span>Door</span
+            >
+            <span class="logo-sub">
+              <span class="sub-dot"></span>Laundry<span class="sub-dot"></span>
+            </span>
+          </div>
+        </a>
+        <!-- /logo -->
+
+        <!-- ══ DESKTOP NAV (center) ══ -->
+        <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+          <a href="index.html" class="nav-link active"><span>Home</span></a>
+          <a href="services.html" class="nav-link"><span>Services</span></a>
+
+          <a href="track-order.html" class="nav-link"
+            ><span>Track Order</span></a
+          >
+          <a href="contact.html" class="nav-link"><span>Contact</span></a>
+        </nav>
+
+        <!-- ══ ACTIONS (right) ══ -->
+        <div class="header-actions" id="headerActions">
+          <!-- Social — WhatsApp (real number) + Instagram (TODO: add real profile URL) -->
+          <div class="header-social">
+            <a
+              href="https://wa.me/918460140501"
+              class="header-social-btn"
+              aria-label="WhatsApp"
+              title="WhatsApp"
+              target="_blank"
+              rel="noopener"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              </svg>
+            </a>
+            <!-- TODO: replace href="#" with the real Instagram profile URL once it exists -->
+            <a
+              href="#"
+              class="header-social-btn"
+              aria-label="Instagram"
+              title="Instagram"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <circle cx="12" cy="12" r="5" />
+                <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
+          </div>
+
+          <!-- Call Now — always visible, linked to phone -->
+          <a
+            href="tel:+918460140501"
+            class="btn-call"
+            id="callBtn"
+            aria-label="Call us now"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2
+                       19.8 19.8 0 0 1-8.63-3.07
+                       A19.5 19.5 0 0 1 4.07 12
+                       a19.8 19.8 0 0 1-3.07-8.67
+                       A2 2 0 0 1 3 1.18h3a2 2 0 0 1 2 1.72
+                       c.127.96.361 1.903.7 2.81
+                       a2 2 0 0 1-.45 2.11L7.09 8.91
+                       a16 16 0 0 0 6 6l1.27-1.27
+                       a2 2 0 0 1 2.11-.45
+                       c.907.339 1.85.573 2.81.7
+                       A2 2 0 0 1 22 16.92z"
+              />
+            </svg>
+            <span class="call-text">Call Now</span>
+          </a>
+
+          <!-- Login — visible when logged OUT (default) -->
+          <a href="login.html" class="btn-ghost" id="loginBtn">Login</a>
+
+          <!-- Book Pickup — hidden until logged IN -->
+          <a
+            href="services.html"
+            class="btn-primary"
+            id="bookBtn"
+            style="display: none"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+            Book Pickup
+          </a>
+
+          <!-- User avatar — hidden until logged IN -->
+          <div class="user-menu" id="userMenu" style="display: none">
+            <button
+              class="user-avatar"
+              id="userAvatarBtn"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-label="User menu"
+            >
+              <span id="userInitial">U</span>
+            </button>
+            <div class="dropdown" id="userDropdown">
+              <!-- User's name at top of dropdown -->
+              <div
+                style="
+                  padding: 10px 16px 8px;
+                  border-bottom: 1px solid var(--border);
+                "
+              >
+                <div
+                  style="
+                    font-size: 0.75rem;
+                    color: var(--text-light);
+                    text-transform: uppercase;
+                    letter-spacing: 0.06em;
+                  "
+                >
+                  Signed in as
+                </div>
+                <div
+                  id="dropdownUserName"
+                  style="
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    color: var(--text-dark);
+                    margin-top: 2px;
+                  "
+                >
+                  —
+                </div>
+              </div>
+
+              <a href="profile.html">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                </svg>
+                My Profile
+              </a>
+
+              <a href="#" id="logoutBtn" class="logout-link">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <polyline points="16 17 21 12 16 7" />
+                  <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Logout
+              </a>
+            </div>
+          </div>
+          <!-- /user-menu -->
+        </div>
+        <!-- /header-actions -->
+
+        <!-- ══ HAMBURGER (mobile only) ══ -->
+        <button
+          class="hamburger"
+          id="hamburger"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+      <!-- /header-inner -->
+
+      <!-- ══ MOBILE MENU ══ -->
+      <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <nav class="mobile-nav">
+          <a href="index.html" class="mobile-link" style="--i: 0">Home</a>
+          <a href="services.html" class="mobile-link" style="--i: 1"
+            >Services</a
+          >
+          <a href="services.html" class="mobile-link" style="--i: 2">Book Now</a>
+          <a href="track-order.html" class="mobile-link" style="--i: 3"
+            >Track Order</a
+          >
+          <a href="#contact" class="mobile-link" style="--i: 4">Contact</a>
+        </nav>
+
+        <div class="mobile-actions">
+          <!-- Social — WhatsApp (real number) + Instagram (TODO: add real profile URL) -->
+          <div class="mobile-social">
+            <a href="https://wa.me/918460140501" class="header-social-btn" aria-label="WhatsApp" title="WhatsApp" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              </svg>
+            </a>
+            <!-- TODO: replace href="#" with the real Instagram profile URL once it exists -->
+            <a href="#" class="header-social-btn" aria-label="Instagram" title="Instagram">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <circle cx="12" cy="12" r="5" />
+                <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
+          </div>
+
+          <!-- Call Now in mobile -->
+          <a href="tel:+918460140501" class="btn-call full-width">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2
+                       19.8 19.8 0 0 1-8.63-3.07
+                       A19.5 19.5 0 0 1 4.07 12
+                       a19.8 19.8 0 0 1-3.07-8.67
+                       A2 2 0 0 1 3 1.18h3a2 2 0 0 1 2 1.72
+                       c.127.96.361 1.903.7 2.81
+                       a2 2 0 0 1-.45 2.11L7.09 8.91
+                       a16 16 0 0 0 6 6l1.27-1.27
+                       a2 2 0 0 1 2.11-.45
+                       c.907.339 1.85.573 2.81.7
+                       A2 2 0 0 1 22 16.92z"
+              />
+            </svg>
+            Call Now: 84601 40501
+          </a>
+
+          <!-- Login — visible when logged OUT (default) -->
+          <a href="login.html" class="btn-ghost full-width" id="mobileLoginBtn"
+            >Login</a
+          >
+
+          <!-- Book Pickup — hidden until logged IN -->
+          <a
+            href="services.html"
+            class="btn-primary full-width"
+            id="mobileBookBtn"
+            style="display: none"
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+            Book Pickup
+          </a>
+        </div>
+      </div>
+      <!-- /mobile-menu -->
+    </header>
+
+    <!-- Load JS last --><!-- Add these BEFORE the existing header.js script tag -->
+    <script src="./js/auth.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/header.js"></script>
+  </body>
+</html>

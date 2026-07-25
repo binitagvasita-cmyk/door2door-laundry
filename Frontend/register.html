@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account — Door2Door Laundry</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Header styles (shared component) -->
+    <link rel="stylesheet" href="css/header.css" />
+    <!-- Registration styles -->
+    <link rel="stylesheet" href="css/register.css" />
+  </head>
+  <body>
+    <!-- ════════════════════════════════════════
+       HEADER COMPONENT (same as site-wide)
+  ════════════════════════════════════════ -->
+    <div id="header-placeholder"></div>
+
+    <!-- ════════════════════════════════════════
+       REGISTRATION SECTION
+  ════════════════════════════════════════ -->
+    <main class="reg-main">
+      <!-- Left decorative panel -->
+      <aside class="reg-panel" aria-hidden="true">
+        <div class="reg-panel__bg"></div>
+        <div class="reg-panel__content">
+          <div class="reg-panel__logo">
+            <span class="panel-logo-icon">🧺</span>
+          </div>
+          <h2 class="reg-panel__headline">
+            Fresh clothes,<br /><em>delivered to you.</em>
+          </h2>
+          <p class="reg-panel__sub">
+            Join thousands of happy customers across the city who trust
+            Door2Door with their laundry.
+          </p>
+          <ul class="reg-panel__perks">
+            <li><span class="perk-dot"></span>Free pickup &amp; delivery</li>
+            <li><span class="perk-dot"></span>48-hour turnaround</li>
+            <li><span class="perk-dot"></span>Real-time order tracking</li>
+            <li><span class="perk-dot"></span>Eco-friendly detergents</li>
+          </ul>
+        </div>
+        <!-- Floating bubbles -->
+        <div class="bubble bubble--1"></div>
+        <div class="bubble bubble--2"></div>
+        <div class="bubble bubble--3"></div>
+      </aside>
+
+      <!-- Right form panel -->
+      <section class="reg-form-wrap">
+        <!-- Step indicator -->
+        <div
+          class="step-indicator"
+          role="progressbar"
+          aria-valuenow="1"
+          aria-valuemin="1"
+          aria-valuemax="3"
+          id="stepIndicator"
+        >
+          <div class="step-track">
+            <div class="step-track__fill" id="trackFill"></div>
+          </div>
+          <button
+            class="step-dot active"
+            data-step="1"
+            aria-label="Step 1: Account"
+          >
+            <span class="step-dot__num">1</span>
+            <span class="step-dot__icon">✓</span>
+          </button>
+          <button class="step-dot" data-step="2" aria-label="Step 2: Address">
+            <span class="step-dot__num">2</span>
+            <span class="step-dot__icon">✓</span>
+          </button>
+          <button class="step-dot" data-step="3" aria-label="Step 3: Confirm">
+            <span class="step-dot__num">3</span>
+            <span class="step-dot__icon">✓</span>
+          </button>
+        </div>
+
+        <!-- Step labels -->
+        <div class="step-labels">
+          <span class="step-label active" data-step="1">Account</span>
+          <span class="step-label" data-step="2">Address</span>
+          <span class="step-label" data-step="3">Confirm</span>
+        </div>
+
+        <!-- Form card -->
+        <div class="reg-card">
+          <!-- ── STEP 1: Account & Authentication ── -->
+          <div class="reg-step active" id="step1">
+            <div class="reg-step__header">
+              <span class="step-badge">Step 1 of 3</span>
+              <h1 class="reg-step__title">Create your account</h1>
+              <p class="reg-step__desc">
+                Set up your login credentials to get started.
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="fullName"
+                >Full Name <span class="required-star">*</span></label
+              >
+              <div class="input-wrap">
+                <span class="input-icon">👤</span>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  class="form-input"
+                  placeholder="Ravi Kumar"
+                  autocomplete="name"
+                />
+              </div>
+              <span class="field-error" id="err-fullName"></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="email"
+                >Email Address <span class="required-star">*</span></label
+              >
+              <div class="input-wrap">
+                <span class="input-icon">✉️</span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-input"
+                  placeholder="ravi@example.com"
+                  autocomplete="email"
+                />
+              </div>
+              <span class="field-hint" id="email-hint"
+                >For order confirmations and receipts</span
+              >
+              <span class="field-error" id="err-email"></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="phone"
+                >Phone Number <span class="required-star">*</span></label
+              >
+              <div class="input-wrap">
+                <span class="input-icon">📱</span>
+                <span class="input-prefix">+91</span>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  class="form-input has-prefix"
+                  placeholder="98765 43210"
+                  autocomplete="tel"
+                  maxlength="10"
+                />
+              </div>
+              <span class="field-hint"
+                >For delivery coordination and SMS updates</span
+              >
+              <span class="field-error" id="err-phone"></span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="password"
+                  >Password <span class="required-star">*</span></label
+                >
+                <div class="input-wrap">
+                  <span class="input-icon">🔒</span>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-input has-toggle"
+                    placeholder="Min. 8 characters"
+                    autocomplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    class="pwd-toggle"
+                    id="pwdToggle1"
+                    aria-label="Show/hide password"
+                  >
+                    <svg
+                      id="eyeIcon1"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </div>
+                <!-- Password strength bar -->
+                <div class="pwd-strength" id="pwdStrength">
+                  <div class="pwd-strength__bar">
+                    <div class="pwd-strength__fill" id="pwdFill"></div>
+                  </div>
+                  <span class="pwd-strength__label" id="pwdLabel"
+                    >Enter a password</span
+                  >
+                </div>
+                <span class="field-error" id="err-password"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="confirmPassword"
+                  >Confirm Password <span class="required-star">*</span></label
+                >
+                <div class="input-wrap">
+                  <span class="input-icon">🔒</span>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    class="form-input has-toggle"
+                    placeholder="Re-enter password"
+                    autocomplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    class="pwd-toggle"
+                    id="pwdToggle2"
+                    aria-label="Show/hide confirm password"
+                  >
+                    <svg
+                      id="eyeIcon2"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </div>
+                <span class="field-error" id="err-confirmPassword"></span>
+              </div>
+            </div>
+
+            <button class="btn-next" type="button" onclick="goStep(2)">
+              Continue to Address
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            <p class="reg-login-link">
+              Already have an account? <a href="login.html">Sign in</a>
+            </p>
+          </div>
+
+          <!-- ── STEP 2: Location & Delivery Details ── -->
+          <div class="reg-step" id="step2">
+            <div class="reg-step__header">
+              <span class="step-badge">Step 2 of 3</span>
+              <h1 class="reg-step__title">Your delivery address</h1>
+              <p class="reg-step__desc">
+                Where should we pick up and drop off your laundry?
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="streetAddress">
+                Street Address <span class="optional-tag">Optional</span>
+              </label>
+              <div class="input-wrap">
+                <span class="input-icon">🏠</span>
+                <input
+                  type="text"
+                  id="streetAddress"
+                  name="streetAddress"
+                  class="form-input"
+                  placeholder="12, Gandhi Nagar, Satellite Road"
+                  autocomplete="street-address"
+                />
+              </div>
+              <span class="field-hint"
+                >You can add this while booking if preferred</span
+              >
+              <span class="field-error" id="err-streetAddress"></span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="apartment">
+                  Apartment / Flat No.
+                  <span class="optional-tag">Optional</span>
+                </label>
+                <div class="input-wrap">
+                  <span class="input-icon">🏢</span>
+                  <input
+                    type="text"
+                    id="apartment"
+                    name="apartment"
+                    class="form-input"
+                    placeholder="Flat 3B, Tower 2"
+                  />
+                </div>
+                <span class="field-error" id="err-apartment"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="pinCode">
+                  PIN Code <span class="optional-tag">Optional</span>
+                </label>
+                <div class="input-wrap">
+                  <span class="input-icon">📍</span>
+                  <input
+                    type="text"
+                    id="pinCode"
+                    name="pinCode"
+                    class="form-input"
+                    placeholder="380015"
+                    maxlength="6"
+                    inputmode="numeric"
+                  />
+                </div>
+                <span class="field-hint" id="pinHint">Ahmedabad area only</span>
+                <span class="field-error" id="err-pinCode"></span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="buildingName">
+                  Building / Society <span class="optional-tag">Optional</span>
+                </label>
+                <div class="input-wrap">
+                  <span class="input-icon">🏗️</span>
+                  <input
+                    type="text"
+                    id="buildingName"
+                    name="buildingName"
+                    class="form-input"
+                    placeholder="Shyamal Heights"
+                  />
+                </div>
+                <span class="field-error" id="err-buildingName"></span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="landmark">
+                  Landmark <span class="optional-tag">Optional</span>
+                </label>
+                <div class="input-wrap">
+                  <span class="input-icon">🗺️</span>
+                  <input
+                    type="text"
+                    id="landmark"
+                    name="landmark"
+                    class="form-input"
+                    placeholder="Near AMTS Bus Stop"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Service availability check badge -->
+            <div class="service-check" id="serviceCheck" style="display: none">
+              <span class="service-check__icon" id="serviceIcon">✅</span>
+              <span class="service-check__text" id="serviceText"
+                >Great news! We serve your area.</span
+              >
+            </div>
+
+            <div class="btn-row">
+              <button class="btn-back" type="button" onclick="goStep(1)">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back
+              </button>
+              <button class="btn-next" type="button" onclick="goStep(3)">
+                Continue to Confirm
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── STEP 3: Terms & Verification + Submit ── -->
+          <div class="reg-step" id="step3">
+            <div class="reg-step__header">
+              <span class="step-badge">Step 3 of 3</span>
+              <h1 class="reg-step__title">Almost there!</h1>
+              <p class="reg-step__desc">
+                Verify your email and accept the terms to complete registration.
+              </p>
+            </div>
+
+            <!-- Summary card -->
+            <div class="summary-card">
+              <h3 class="summary-card__title">Registration Summary</h3>
+              <div class="summary-grid">
+                <div class="summary-item">
+                  <span class="summary-item__label">Name</span>
+                  <span class="summary-item__value" id="sum-name">—</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-item__label">Email</span>
+                  <span class="summary-item__value" id="sum-email">—</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-item__label">Phone</span>
+                  <span class="summary-item__value" id="sum-phone">—</span>
+                </div>
+                <div class="summary-item summary-item--full">
+                  <span class="summary-item__label">Delivery Address</span>
+                  <span class="summary-item__value" id="sum-address">—</span>
+                </div>
+              </div>
+              <!-- Edit button hidden once email is verified -->
+              <button
+                class="summary-edit"
+                type="button"
+                id="editDetailsBtn"
+                onclick="goStep(1)"
+              >
+                Edit Details
+              </button>
+            </div>
+
+            <!-- OTP section — Email verification (required) -->
+            <div class="otp-section">
+              <div class="otp-section__header">
+                <span class="otp-badge">Required</span>
+                <h4 class="otp-section__title">Verify your email address</h4>
+                <p class="otp-section__desc">
+                  We'll send a one-time password to
+                  <strong id="otp-email-display">—</strong> to confirm your
+                  account.
+                </p>
+              </div>
+              <div class="otp-row">
+                <button
+                  class="btn-otp-send"
+                  type="button"
+                  id="sendOtpBtn"
+                  onclick="sendOtp()"
+                >
+                  Send OTP
+                </button>
+                <div class="otp-inputs" id="otpInputs" style="display: none">
+                  <input
+                    type="text"
+                    class="otp-box"
+                    maxlength="1"
+                    inputmode="numeric"
+                  />
+                  <input
+                    type="text"
+                    class="otp-box"
+                    maxlength="1"
+                    inputmode="numeric"
+                  />
+                  <input
+                    type="text"
+                    class="otp-box"
+                    maxlength="1"
+                    inputmode="numeric"
+                  />
+                  <input
+                    type="text"
+                    class="otp-box"
+                    maxlength="1"
+                    inputmode="numeric"
+                  />
+                  <input
+                    type="text"
+                    class="otp-box"
+                    maxlength="1"
+                    inputmode="numeric"
+                  />
+                  <input
+                    type="text"
+                    class="otp-box"
+                    maxlength="1"
+                    inputmode="numeric"
+                  />
+                </div>
+                <button
+                  class="btn-otp-verify"
+                  type="button"
+                  id="verifyOtpBtn"
+                  onclick="verifyOtp()"
+                  style="display: none"
+                >
+                  Verify
+                </button>
+              </div>
+              <p class="otp-status" id="otpStatus"></p>
+            </div>
+
+            <!-- Consent checkboxes -->
+            <div class="consent-block">
+              <label class="checkbox-label" for="termsCheck">
+                <input type="checkbox" id="termsCheck" class="checkbox-input" />
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">
+                  I agree to the <a href="#" class="link">Terms of Use</a> and
+                  <a href="#" class="link">Privacy Policy</a> of Door2Door
+                  Laundry. <span class="required-star">*</span>
+                </span>
+              </label>
+              <span class="field-error" id="err-terms"></span>
+
+              <label class="checkbox-label" for="marketingCheck">
+                <input
+                  type="checkbox"
+                  id="marketingCheck"
+                  class="checkbox-input"
+                  checked
+                />
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">
+                  I'd like to receive offers, order updates, and tips via SMS /
+                  WhatsApp / Email. <span class="optional-tag">Optional</span>
+                </span>
+              </label>
+            </div>
+
+            <!-- Global form error -->
+            <div
+              class="form-error-banner"
+              id="formErrorBanner"
+              style="display: none"
+            >
+              <span>⚠️ </span><span id="formErrorMsg"></span>
+            </div>
+
+            <div class="btn-row">
+              <button
+                class="btn-back"
+                type="button"
+                id="backToStep2Btn"
+                onclick="goStep(2)"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back
+              </button>
+              <button
+                class="btn-submit"
+                type="button"
+                id="submitBtn"
+                onclick="submitRegistration()"
+              >
+                <span id="submitText">Create My Account</span>
+                <span
+                  id="submitSpinner"
+                  class="btn-spinner"
+                  style="display: none"
+                ></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ── SUCCESS STATE ── -->
+          <div class="reg-step" id="stepSuccess">
+            <div class="success-state">
+              <div class="success-state__icon">
+                <svg
+                  viewBox="0 0 52 52"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    class="success-circle"
+                    cx="26"
+                    cy="26"
+                    r="25"
+                    fill="none"
+                    stroke="#42BABC"
+                    stroke-width="2"
+                  />
+                  <path
+                    class="success-check"
+                    d="M14 26l9 9 15-16"
+                    stroke="#42BABC"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <h2 class="success-state__title">Welcome to Door2Door!</h2>
+              <p class="success-state__sub">
+                Your account has been created. You can now book your first
+                laundry pickup.
+              </p>
+              <a href="services.html" class="btn-success-cta">Book a Pickup →</a>
+              <a href="index.html" class="btn-success-outline"
+                >Go to Home</a
+              >
+            </div>
+          </div>
+        </div>
+        <!-- /reg-card -->
+      </section>
+      <!-- /reg-form-wrap -->
+    </main>
+    <!-- /reg-main -->
+    <!-- 1. JWT storage helper — must be first -->
+    <script src="js/auth.js"></script>
+
+    <!-- 2. All API calls — defines AuthAPI, OrdersAPI, etc. -->
+    <script src="js/api.js"></script>
+
+    <!-- 3. Registration wizard — uses AuthAPI, so must be last -->
+    <!-- Header JS (loads header component) -->
+    <script src="js/header.js"></script>
+    <!-- Registration JS -->
+    <script src="js/register.js"></script>
+  </body>
+</html>

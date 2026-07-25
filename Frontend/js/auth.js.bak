@@ -1,0 +1,52 @@
+/* ============================================================
+   Door2Door Laundry — auth.js
+   JWT store / read / logout helper.
+   Include this BEFORE api.js on every page.
+   ============================================================ */
+
+"use strict";
+
+const Auth = {
+  TOKEN_KEY: "d2d_token",
+
+  setToken(token) {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  },
+
+  getToken() {
+    return localStorage.getItem(this.TOKEN_KEY);
+  },
+
+  clearToken() {
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem("d2d_user");
+  },
+
+  isLoggedIn() {
+    return !!this.getToken();
+  },
+
+  // Called after successful login — kept separate from setToken
+  // so login.js mock code works without changes to this file
+  loginSuccess(token, user) {
+    this.setToken(token);
+    if (user) localStorage.setItem("d2d_user", JSON.stringify(user));
+  },
+
+  getUser() {
+    try {
+      return JSON.parse(localStorage.getItem("d2d_user")) || {};
+    } catch {
+      return {};
+    }
+  },
+
+  requireAuth() {
+    if (!this.isLoggedIn()) {
+      const returnTo = encodeURIComponent(window.location.href);
+      window.location.href = `login.html?returnTo=${returnTo}`;
+    }
+  },
+};
+
+window.Auth = Auth;

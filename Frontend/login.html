@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login — Door2Door Laundry</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Shared component styles -->
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <!-- Page styles -->
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+
+    <!-- ════════════════════════════════════════
+         HEADER COMPONENT
+    ════════════════════════════════════════ -->
+    <div id="header-placeholder"></div>
+
+    <!-- ════════════════════════════════════════
+         LOGIN SECTION
+    ════════════════════════════════════════ -->
+    <main class="login-main">
+
+      <!-- ── LEFT DECORATIVE PANEL ── -->
+      <aside class="login-panel" aria-hidden="true">
+        <div class="login-panel__bg"></div>
+        <div class="login-panel__content">
+
+          <span class="login-panel__icon">🧺</span>
+
+          <h2 class="login-panel__headline">
+            Welcome<br />back to <em>clean.</em>
+          </h2>
+
+          <p class="login-panel__sub">
+            Sign in to manage your pickups, track orders,
+            and get your laundry done — door to door.
+          </p>
+
+          <div class="panel-divider"></div>
+
+          <ul class="trust-list">
+            <li>
+              <span class="trust-icon">🚀</span>
+              48-hour turnaround, every time
+            </li>
+            <li>
+              <span class="trust-icon">📍</span>
+              Real-time order tracking
+            </li>
+            <li>
+              <span class="trust-icon">🔒</span>
+              Secure &amp; private — your data stays yours
+            </li>
+            <li>
+              <span class="trust-icon">🌿</span>
+              Eco-friendly detergents &amp; packaging
+            </li>
+          </ul>
+        </div>
+
+        <!-- Floating bubbles -->
+        <div class="bubble bubble--1"></div>
+        <div class="bubble bubble--2"></div>
+        <div class="bubble bubble--3"></div>
+      </aside>
+
+      <!-- ── RIGHT FORM PANEL ── -->
+      <section class="login-form-wrap">
+        <div class="login-card">
+
+          <!-- Card header -->
+          <div class="login-card__header">
+            <span class="login-badge">Member Login</span>
+            <h1 class="login-card__title">Sign in to your account</h1>
+            <p class="login-card__desc">
+              Enter your email and password to continue.
+            </p>
+          </div>
+
+          <!-- ── LOGIN FORM ── -->
+          <div id="loginForm">
+
+            <!-- Email -->
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address</label>
+              <div class="input-wrap">
+                <span class="input-icon">✉️</span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-input"
+                  placeholder="ravi@example.com"
+                  autocomplete="email"
+                />
+              </div>
+              <span class="field-error" id="err-email"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label class="form-label" for="password">Password</label>
+              <div class="input-wrap">
+                <span class="input-icon">🔒</span>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="form-input"
+                  placeholder="Your password"
+                  autocomplete="current-password"
+                />
+                <button
+                  type="button"
+                  class="pwd-toggle"
+                  id="pwdToggle"
+                  aria-label="Show/hide password"
+                >
+                  <svg
+                    id="eyeIcon"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                </button>
+              </div>
+              <span class="field-error" id="err-password"></span>
+            </div>
+
+            <!-- Remember me + Forgot -->
+            <div class="login-meta">
+              <label class="checkbox-label" for="rememberMe">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  class="checkbox-input"
+                />
+                <span class="checkbox-custom"></span>
+                <span>Remember me</span>
+              </label>
+              <a href="forgot-password.html" class="forgot-link">
+                Forgot password?
+              </a>
+            </div>
+
+            <!-- Error banner -->
+            <div
+              class="form-error-banner"
+              id="formErrorBanner"
+              style="display: none"
+            >
+              <span>⚠️</span>
+              <span id="formErrorMsg"></span>
+            </div>
+
+            <!-- Submit -->
+            <button
+              class="btn-submit"
+              type="button"
+              id="loginBtn"
+              onclick="submitLogin()"
+            >
+              <span id="loginText">Sign In</span>
+              <span
+                id="loginSpinner"
+                class="btn-spinner"
+                style="display: none"
+              ></span>
+            </button>
+
+            <!-- Register link -->
+            <p class="login-register-link">
+              Don't have an account?
+              <a href="register.html">Create one free</a>
+            </p>
+
+          </div>
+          <!-- /loginForm -->
+
+          <!-- ── SUCCESS STATE ── -->
+          <div class="login-success" id="loginSuccess">
+            <svg class="success-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle
+                class="success-circle"
+                cx="26" cy="26" r="25"
+                fill="none"
+                stroke="#42BABC"
+                stroke-width="2"
+              />
+              <path
+                class="success-check"
+                d="M14 26l9 9 15-16"
+                stroke="#42BABC"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <h2 class="success-title">Welcome back!</h2>
+            <p class="success-sub" id="successSubMsg">
+              You're signed in. Redirecting you now…
+            </p>
+            <a href="index.html" class="btn-success-cta">
+              Go to Home →
+            </a>
+          </div>
+
+        </div>
+        <!-- /login-card -->
+      </section>
+
+    </main>
+    <!-- /login-main -->
+
+    <!-- ════════════════════════════════════════
+         FOOTER COMPONENT
+    ════════════════════════════════════════ -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts — order matters -->
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/login.js"></script>
+
+  </body>
+</html>

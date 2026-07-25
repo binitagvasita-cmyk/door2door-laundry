@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice — Door2Door Laundry</title>
+    <meta name="description" content="Order invoice / bill for your Door2Door Laundry order." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/invoice.css" />
+  </head>
+  <body>
+
+    <!-- Toolbar (hidden when printing) -->
+    <div class="inv-toolbar no-print">
+      <a href="track-order.html" class="inv-back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back
+      </a>
+      <button class="inv-print-btn" id="printBtn" onclick="window.print()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Download / Print Bill
+      </button>
+    </div>
+
+    <!-- Loading / error states -->
+    <div class="inv-state no-print" id="invLoading">Loading your bill…</div>
+    <div class="inv-state inv-state--error no-print" id="invError" style="display:none"></div>
+
+    <!-- Invoice sheet -->
+    <main class="inv-sheet" id="invSheet" style="display:none">
+
+      <div class="inv-head">
+        <div class="inv-brand">
+          <div class="inv-brand-icon">🧺</div>
+          <div>
+            <h1>Door2Door Laundry</h1>
+            <p>Ahmedabad, Gujarat &middot; +91 84601 40501</p>
+          </div>
+        </div>
+        <div class="inv-head-right">
+          <h2>INVOICE</h2>
+          <p>Invoice #<span id="iOrderId">—</span></p>
+          <p id="iDate">—</p>
+        </div>
+      </div>
+
+      <div class="inv-status-row">
+        <span class="inv-pill" id="iOrderStatus">—</span>
+        <span class="inv-pill" id="iPaymentStatus">—</span>
+      </div>
+
+      <div class="inv-parties">
+        <div class="inv-party">
+          <span class="inv-label">Billed To</span>
+          <p class="inv-strong" id="iCustName">—</p>
+          <p id="iCustPhone">—</p>
+          <p id="iCustEmail">—</p>
+        </div>
+        <div class="inv-party">
+          <span class="inv-label">Pickup / Delivery Address</span>
+          <p id="iAddress">—</p>
+        </div>
+        <div class="inv-party">
+          <span class="inv-label">Pickup Schedule</span>
+          <p id="iPickup">—</p>
+        </div>
+      </div>
+
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th class="inv-right">Amount</th>
+          </tr>
+        </thead>
+        <tbody id="iItemsBody">
+          <tr><td colspan="4">—</td></tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" class="inv-right inv-total-label">Total Amount</td>
+            <td class="inv-right inv-total-value" id="iTotal">—</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="inv-payment-box">
+        <div>
+          <span class="inv-label">Payment Method</span>
+          <p class="inv-strong" id="iPaymentMethod">—</p>
+        </div>
+        <div>
+          <span class="inv-label">Paid On</span>
+          <p class="inv-strong" id="iPaidAt">—</p>
+        </div>
+      </div>
+
+      <div class="inv-note-row no-print-empty" id="iNoteRow" style="display:none">
+        <span class="inv-label">Special Instructions</span>
+        <p id="iNote">—</p>
+      </div>
+
+      <div class="inv-footer">
+        <p>Thank you for choosing Door2Door Laundry! This is a system-generated bill.</p>
+        <p>Questions about this bill? Call +91 84601 40501 or WhatsApp us anytime.</p>
+      </div>
+    </main>
+
+    <script src="./js/auth.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/invoice.js"></script>
+  </body>
+</html>
