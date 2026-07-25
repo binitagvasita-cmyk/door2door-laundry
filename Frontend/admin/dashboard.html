@@ -1,483 +1,744 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard — Door2Door Laundry</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — Door2Door Laundry</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="../css/admin.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
 
-  <!-- Inline styles for the category modal. Move these into admin.css
+    <!-- Inline styles for the category modal. Move these into admin.css
        whenever convenient — kept here since admin.css wasn't provided. -->
-  <style>
-    .admin-modal-overlay {
-      position: fixed; inset: 0; background: rgba(15, 30, 30, 0.55);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 1000; padding: 16px;
-    }
-    .admin-modal {
-      background: #fff; border-radius: 16px; width: 100%; max-width: 440px;
-      max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    }
-    .admin-modal__header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 24px; border-bottom: 1px solid #eef5f5;
-    }
-    .admin-modal__header h3 { margin: 0; font-size: 18px; color: #1a2e2e; }
-    .admin-modal__body { padding: 20px 24px; }
-    .admin-modal__footer {
-      padding: 16px 24px 24px; display: flex; justify-content: flex-end;
-    }
-    .cat-icon-cell { font-size: 20px; text-align: center; }
-    .status-pill {
-      display: inline-block; padding: 4px 10px; border-radius: 999px;
-      font-size: 12px; font-weight: 600;
-    }
-    .status-pill--active { background: #e3f8ec; color: #1c8a4d; }
-    .status-pill--inactive { background: #fdeaea; color: #c0392b; }
-    .row-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .row-actions button {
-      border: none; border-radius: 8px; padding: 6px 12px; font-size: 12px;
-      font-weight: 600; cursor: pointer;
-    }
-    .btn-edit { background: #e8f9f9; color: #1a6a6a; }
-    .btn-deactivate { background: #fdeaea; color: #c0392b; }
-    .btn-activate { background: #e3f8ec; color: #1c8a4d; }
-    .btn-items { background: #fff3e0; color: #b5650c; }
-    .btn-call, .btn-whatsapp {
-      display: inline-flex; align-items: center; gap: 4px;
-      text-decoration: none; border: none; border-radius: 8px;
-      padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer;
-      white-space: nowrap;
-    }
-    .btn-call { background: #e8f9f9; color: #1a6a6a; }
-    .btn-whatsapp { background: #e3f8ec; color: #1c8a4d; }
-    .btn-call--disabled, .btn-whatsapp--disabled {
-      opacity: 0.45; pointer-events: none;
-    }
-    .admin-nav__item { cursor: pointer; }
+    <style>
+      .admin-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 30, 30, 0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 16px;
+      }
+      .admin-modal {
+        background: #fff;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 440px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      }
+      .admin-modal__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        border-bottom: 1px solid #eef5f5;
+      }
+      .admin-modal__header h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #1a2e2e;
+      }
+      .admin-modal__body {
+        padding: 20px 24px;
+      }
+      .admin-modal__footer {
+        padding: 16px 24px 24px;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .cat-icon-cell {
+        font-size: 20px;
+        text-align: center;
+      }
+      .status-pill {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .status-pill--active {
+        background: #e3f8ec;
+        color: #1c8a4d;
+      }
+      .status-pill--inactive {
+        background: #fdeaea;
+        color: #c0392b;
+      }
+      .row-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .row-actions button {
+        border: none;
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn-edit {
+        background: #e8f9f9;
+        color: #1a6a6a;
+      }
+      .btn-deactivate {
+        background: #fdeaea;
+        color: #c0392b;
+      }
+      .btn-activate {
+        background: #e3f8ec;
+        color: #1c8a4d;
+      }
+      .btn-items {
+        background: #fff3e0;
+        color: #b5650c;
+      }
+      .btn-call,
+      .btn-whatsapp {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      .btn-call {
+        background: #e8f9f9;
+        color: #1a6a6a;
+      }
+      .btn-whatsapp {
+        background: #e3f8ec;
+        color: #1c8a4d;
+      }
+      .btn-call--disabled,
+      .btn-whatsapp--disabled {
+        opacity: 0.45;
+        pointer-events: none;
+      }
+      .admin-nav__item {
+        cursor: pointer;
+      }
 
-    .admin-modal--wide { max-width: 640px; }
-    .items-modal-subhead {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 14px;
-    }
-    .items-modal-subhead h4 { margin: 0; font-size: 15px; color: #1a2e2e; }
-    .items-mini-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    .items-mini-table th, .items-mini-table td {
-      text-align: left; padding: 8px 6px; border-bottom: 1px solid #eef5f5;
-    }
-    .items-mini-table__empty { text-align: center; color: #8a9a9a; padding: 18px 0; }
+      .admin-modal--wide {
+        max-width: 640px;
+      }
+      .items-modal-subhead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+      .items-modal-subhead h4 {
+        margin: 0;
+        font-size: 15px;
+        color: #1a2e2e;
+      }
+      .items-mini-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .items-mini-table th,
+      .items-mini-table td {
+        text-align: left;
+        padding: 8px 6px;
+        border-bottom: 1px solid #eef5f5;
+      }
+      .items-mini-table__empty {
+        text-align: center;
+        color: #8a9a9a;
+        padding: 18px 0;
+      }
 
-    .reports-charts-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;
-    }
-    @media (max-width: 900px) {
-      .reports-charts-grid { grid-template-columns: 1fr; }
-    }
-    .reports-chart-box { padding: 16px; }
-    .reports-chart-title {
-      margin: 0 0 12px; font-size: 15px; color: #1a2e2e; font-weight: 600;
-    }
-    .reports-chart-canvas-wrap {
-      position: relative; height: 280px; width: 100%;
-    }
-  </style>
-</head>
-<body class="admin-dash-body">
+      .reports-charts-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 900px) {
+        .reports-charts-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .reports-chart-box {
+        padding: 16px;
+      }
+      .reports-chart-title {
+        margin: 0 0 12px;
+        font-size: 15px;
+        color: #1a2e2e;
+        font-weight: 600;
+      }
+      .reports-chart-canvas-wrap {
+        position: relative;
+        height: 280px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body class="admin-dash-body">
+    <!-- Mobile top bar -->
+    <div class="admin-mobile-bar">
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <div class="admin-mobile-bar__brand"><span>🧺</span> Door2Door Admin</div>
+      <div style="width: 24px"></div>
+    </div>
 
-  <!-- Mobile top bar -->
-  <div class="admin-mobile-bar">
-    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </svg>
-    </button>
-    <div class="admin-mobile-bar__brand"><span>🧺</span> Door2Door Admin</div>
-    <div style="width:24px"></div>
-  </div>
+    <!-- Overlay -->
+    <div class="admin-overlay" id="sidebarOverlay"></div>
 
-  <!-- Overlay -->
-  <div class="admin-overlay" id="sidebarOverlay"></div>
-
-  <div class="admin-shell">
-
-    <!-- ═══════════ SIDEBAR ═══════════ -->
-    <aside class="admin-sidebar" id="adminSidebar">
-      <div class="admin-sidebar__brand">
-        <span>🧺</span>
-        <div>
-          <h2>Door2Door</h2>
-          <p>Admin Console</p>
-        </div>
-        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-
-      <nav class="admin-nav">
-        <a href="#" class="admin-nav__item active" data-view="orders">
-          <span class="admin-nav__icon">📦</span> Orders
-        </a>
-        <a href="#" class="admin-nav__item" data-view="categories">
-          <span class="admin-nav__icon">🏷️</span> Categories
-        </a>
-        <a href="#" class="admin-nav__item" data-view="reports">
-          <span class="admin-nav__icon">📊</span> Reports
-        </a>
-      </nav>
-
-      <div class="admin-sidebar__footer">
-        <div class="admin-sidebar__user">
-          <div class="admin-avatar" id="adminAvatar">A</div>
+    <div class="admin-shell">
+      <!-- ═══════════ SIDEBAR ═══════════ -->
+      <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-sidebar__brand">
+          <span>🧺</span>
           <div>
-            <p class="admin-user-name" id="adminName">Admin</p>
-            <p class="admin-user-email" id="adminEmail">—</p>
+            <h2>Quick Laundry</h2>
+            <p>Admin Console</p>
           </div>
-        </div>
-        <button class="admin-logout-btn" id="logoutBtn">Log out</button>
-      </div>
-    </aside>
-
-    <!-- ═══════════ MAIN ═══════════ -->
-    <main class="admin-main">
-
-      <!-- ═════════ ORDERS VIEW ═════════ -->
-      <div id="view-orders" class="admin-view">
-
-        <header class="admin-topbar">
-          <div>
-            <h1>Orders</h1>
-            <p id="lastUpdated">Loading…</p>
-          </div>
-          <button class="btn-refresh" id="refreshBtn">↻ Refresh</button>
-        </header>
-
-        <!-- Stat cards -->
-        <section class="admin-stats">
-          <div class="stat-card">
-            <p class="stat-label">Total Users</p>
-            <h2 class="stat-value" id="statUsers">—</h2>
-          </div>
-          <div class="stat-card">
-            <p class="stat-label">Total Orders</p>
-            <h2 class="stat-value" id="statTotal">—</h2>
-          </div>
-          <div class="stat-card">
-            <p class="stat-label">Pending</p>
-            <h2 class="stat-value" id="statPending">—</h2>
-          </div>
-          <div class="stat-card">
-            <p class="stat-label">Delivered</p>
-            <h2 class="stat-value" id="statDelivered">—</h2>
-          </div>
-          <div class="stat-card stat-card--accent">
-            <p class="stat-label">Total Revenue</p>
-            <h2 class="stat-value" id="statRevenue">—</h2>
-          </div>
-        </section>
-
-        <!-- Status filter tabs -->
-        <div class="status-tabs" id="statusTabs">
-          <button class="status-tab active" data-status="all">All</button>
-          <button class="status-tab" data-status="pending">Pending</button>
-          <button class="status-tab" data-status="confirmed">Confirmed</button>
-          <button class="status-tab" data-status="picked_up">Picked Up</button>
-          <button class="status-tab" data-status="in_process">In Process</button>
-          <button class="status-tab" data-status="out_for_delivery">Out for Delivery</button>
-          <button class="status-tab" data-status="delivered">Delivered</button>
-          <button class="status-tab" data-status="cancelled">Cancelled</button>
+          <button
+            class="sidebar-close-btn"
+            id="sidebarCloseBtn"
+            aria-label="Close menu"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
         </div>
 
-        <!-- Orders table -->
-        <section class="admin-table-box">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Order</th>
-                <th>Customer</th>
-                <th>Service</th>
-                <th>Pickup</th>
-                <th>Amount</th>
-                <th>Placed</th>
-                <th>Status</th>
-                <th>Payment</th>
-                <th>Contact</th>
-              </tr>
-            </thead>
-            <tbody id="ordersTableBody">
-              <tr><td colspan="8" class="admin-table__empty">Loading orders…</td></tr>
-            </tbody>
-          </table>
-        </section>
+        <nav class="admin-nav">
+          <a href="#" class="admin-nav__item active" data-view="orders">
+            <span class="admin-nav__icon">📦</span> Orders
+          </a>
+          <a href="#" class="admin-nav__item" data-view="categories">
+            <span class="admin-nav__icon">🏷️</span> Categories
+          </a>
+          <a href="#" class="admin-nav__item" data-view="reports">
+            <span class="admin-nav__icon">📊</span> Reports
+          </a>
+        </nav>
 
-      </div>
-
-      <!-- ═════════ CATEGORIES VIEW ═════════ -->
-      <div id="view-categories" class="admin-view" style="display:none">
-
-        <header class="admin-topbar">
-          <div>
-            <h1>Categories</h1>
-            <p>Manage the laundry service categories shown to customers.</p>
+        <div class="admin-sidebar__footer">
+          <div class="admin-sidebar__user">
+            <div class="admin-avatar" id="adminAvatar">A</div>
+            <div>
+              <p class="admin-user-name" id="adminName">Admin</p>
+              <p class="admin-user-email" id="adminEmail">—</p>
+            </div>
           </div>
-          <button class="btn-refresh" id="addCategoryBtn">+ Add Category</button>
-        </header>
+          <button class="admin-logout-btn" id="logoutBtn">Log out</button>
+        </div>
+      </aside>
 
-        <section class="admin-table-box">
-          <table class="admin-table">
+      <!-- ═══════════ MAIN ═══════════ -->
+      <main class="admin-main">
+        <!-- ═════════ ORDERS VIEW ═════════ -->
+        <div id="view-orders" class="admin-view">
+          <header class="admin-topbar">
+            <div>
+              <h1>Orders</h1>
+              <p id="lastUpdated">Loading…</p>
+            </div>
+            <button class="btn-refresh" id="refreshBtn">↻ Refresh</button>
+          </header>
+
+          <!-- Stat cards -->
+          <section class="admin-stats">
+            <div class="stat-card">
+              <p class="stat-label">Total Users</p>
+              <h2 class="stat-value" id="statUsers">—</h2>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Total Orders</p>
+              <h2 class="stat-value" id="statTotal">—</h2>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Pending</p>
+              <h2 class="stat-value" id="statPending">—</h2>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Delivered</p>
+              <h2 class="stat-value" id="statDelivered">—</h2>
+            </div>
+            <div class="stat-card stat-card--accent">
+              <p class="stat-label">Total Revenue</p>
+              <h2 class="stat-value" id="statRevenue">—</h2>
+            </div>
+          </section>
+
+          <!-- Status filter tabs -->
+          <div class="status-tabs" id="statusTabs">
+            <button class="status-tab active" data-status="all">All</button>
+            <button class="status-tab" data-status="pending">Pending</button>
+            <button class="status-tab" data-status="confirmed">
+              Confirmed
+            </button>
+            <button class="status-tab" data-status="picked_up">
+              Picked Up
+            </button>
+            <button class="status-tab" data-status="in_process">
+              In Process
+            </button>
+            <button class="status-tab" data-status="out_for_delivery">
+              Out for Delivery
+            </button>
+            <button class="status-tab" data-status="delivered">
+              Delivered
+            </button>
+            <button class="status-tab" data-status="cancelled">
+              Cancelled
+            </button>
+          </div>
+
+          <!-- Orders table -->
+          <section class="admin-table-box">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Customer</th>
+                  <th>Service</th>
+                  <th>Pickup</th>
+                  <th>Amount</th>
+                  <th>Placed</th>
+                  <th>Status</th>
+                  <th>Payment</th>
+                  <th>Contact</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody">
+                <tr>
+                  <td colspan="8" class="admin-table__empty">
+                    Loading orders…
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+
+        <!-- ═════════ CATEGORIES VIEW ═════════ -->
+        <div id="view-categories" class="admin-view" style="display: none">
+          <header class="admin-topbar">
+            <div>
+              <h1>Categories</h1>
+              <p>Manage the laundry service categories shown to customers.</p>
+            </div>
+            <button class="btn-refresh" id="addCategoryBtn">
+              + Add Category
+            </button>
+          </header>
+
+          <section class="admin-table-box">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Icon</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Unit</th>
+                  <th>Order</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="categoriesTableBody">
+                <tr>
+                  <td colspan="7" class="admin-table__empty">
+                    Loading categories…
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+
+        <!-- ═════════ REPORTS VIEW ═════════ -->
+        <div id="view-reports" class="admin-view" style="display: none">
+          <header class="admin-topbar">
+            <div>
+              <h1>Reports</h1>
+              <p id="reportsSubtitle">Revenue and top customers overview.</p>
+            </div>
+            <div class="row-actions">
+              <select
+                id="reportsRangeSelect"
+                class="form-input"
+                style="width: auto; padding: 8px 12px"
+              >
+                <option value="">All time</option>
+                <option value="7">Last 7 days</option>
+                <option value="30" selected>Last 30 days</option>
+                <option value="90">Last 90 days</option>
+                <option value="365">Last 12 months</option>
+              </select>
+              <button class="btn-refresh" id="reportsRefreshBtn">
+                ↻ Refresh
+              </button>
+              <button class="btn-refresh" id="reportsExportBtn">
+                ⬇ Export to Excel
+              </button>
+            </div>
+          </header>
+
+          <!-- Stat cards -->
+          <section class="admin-stats">
+            <div class="stat-card stat-card--accent">
+              <p class="stat-label">Total Revenue</p>
+              <h2 class="stat-value" id="repStatRevenue">—</h2>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Total Orders</p>
+              <h2 class="stat-value" id="repStatOrders">—</h2>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Avg. Order Value</p>
+              <h2 class="stat-value" id="repStatAvg">—</h2>
+            </div>
+            <div class="stat-card">
+              <p class="stat-label">Top Customer</p>
+              <h2
+                class="stat-value"
+                id="repStatTopCustomer"
+                style="font-size: 16px"
+              >
+                —
+              </h2>
+            </div>
+          </section>
+
+          <!-- Charts -->
+          <section class="reports-charts-grid">
+            <div class="admin-table-box reports-chart-box">
+              <h3 class="reports-chart-title">Revenue Over Time</h3>
+              <div class="reports-chart-canvas-wrap">
+                <canvas id="revenueChart"></canvas>
+              </div>
+            </div>
+            <div class="admin-table-box reports-chart-box">
+              <h3 class="reports-chart-title">Top Customers (by spend)</h3>
+              <div class="reports-chart-canvas-wrap">
+                <canvas id="topCustomersChart"></canvas>
+              </div>
+            </div>
+          </section>
+
+          <!-- Top customers table -->
+          <section class="admin-table-box">
+            <h3 class="reports-chart-title" style="padding: 16px 16px 0">
+              Top Customers
+            </h3>
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Customer</th>
+                  <th>Orders</th>
+                  <th>Total Spent</th>
+                  <th>Contact</th>
+                </tr>
+              </thead>
+              <tbody id="topCustomersTableBody">
+                <tr>
+                  <td colspan="5" class="admin-table__empty">Loading…</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- Category add/edit modal -->
+    <div
+      class="admin-modal-overlay"
+      id="categoryModalOverlay"
+      style="display: none"
+    >
+      <div class="admin-modal">
+        <div class="admin-modal__header">
+          <h3 id="categoryModalTitle">Add Category</h3>
+          <button
+            class="sidebar-close-btn"
+            id="categoryModalCloseBtn"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="admin-modal__body">
+          <input type="hidden" id="catId" />
+          <div class="form-group">
+            <label class="form-label" for="catName">Name *</label>
+            <input
+              type="text"
+              id="catName"
+              class="form-input"
+              placeholder="e.g. Dry clean with iron"
+            />
+            <span class="field-error" id="err-catName"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="catDescription">Description</label>
+            <input
+              type="text"
+              id="catDescription"
+              class="form-input"
+              placeholder="Short description"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="catPrice">Price (₹) *</label>
+            <input
+              type="number"
+              id="catPrice"
+              class="form-input"
+              placeholder="80"
+              min="0"
+              step="0.01"
+            />
+            <span class="field-error" id="err-catPrice"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="catUnit">Unit</label>
+            <input
+              type="text"
+              id="catUnit"
+              class="form-input"
+              placeholder="Per Piece"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="catIcon">Icon (emoji)</label>
+            <input
+              type="text"
+              id="catIcon"
+              class="form-input"
+              placeholder="👔"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="catImage">Image URL</label>
+            <input
+              type="text"
+              id="catImage"
+              class="form-input"
+              placeholder="https://…"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="catOrder">Display Order</label>
+            <input
+              type="number"
+              id="catOrder"
+              class="form-input"
+              placeholder="0"
+            />
+          </div>
+          <div
+            class="form-error-banner"
+            id="catFormErrorBanner"
+            style="display: none"
+          >
+            <span>⚠️</span>
+            <span id="catFormErrorMsg"></span>
+          </div>
+        </div>
+        <div class="admin-modal__footer">
+          <button class="btn-refresh" id="categorySaveBtn">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Items-under-category modal: lists items for one category, with add/edit -->
+    <div
+      class="admin-modal-overlay"
+      id="itemsModalOverlay"
+      style="display: none"
+    >
+      <div class="admin-modal admin-modal--wide">
+        <div class="admin-modal__header">
+          <h3 id="itemsModalTitle">Items</h3>
+          <button
+            class="sidebar-close-btn"
+            id="itemsModalCloseBtn"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="admin-modal__body">
+          <div class="items-modal-subhead">
+            <h4 id="itemsModalSubhead"></h4>
+            <button class="btn-refresh" id="addItemBtn">+ Add Item</button>
+          </div>
+          <table class="items-mini-table">
             <thead>
               <tr>
                 <th>Icon</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Unit</th>
-                <th>Order</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody id="categoriesTableBody">
-              <tr><td colspan="7" class="admin-table__empty">Loading categories…</td></tr>
-            </tbody>
-          </table>
-        </section>
-
-      </div>
-
-      <!-- ═════════ REPORTS VIEW ═════════ -->
-      <div id="view-reports" class="admin-view" style="display:none">
-
-        <header class="admin-topbar">
-          <div>
-            <h1>Reports</h1>
-            <p id="reportsSubtitle">Revenue and top customers overview.</p>
-          </div>
-          <div class="row-actions">
-            <select id="reportsRangeSelect" class="form-input" style="width:auto; padding:8px 12px;">
-              <option value="">All time</option>
-              <option value="7">Last 7 days</option>
-              <option value="30" selected>Last 30 days</option>
-              <option value="90">Last 90 days</option>
-              <option value="365">Last 12 months</option>
-            </select>
-            <button class="btn-refresh" id="reportsRefreshBtn">↻ Refresh</button>
-            <button class="btn-refresh" id="reportsExportBtn">⬇ Export to Excel</button>
-          </div>
-        </header>
-
-        <!-- Stat cards -->
-        <section class="admin-stats">
-          <div class="stat-card stat-card--accent">
-            <p class="stat-label">Total Revenue</p>
-            <h2 class="stat-value" id="repStatRevenue">—</h2>
-          </div>
-          <div class="stat-card">
-            <p class="stat-label">Total Orders</p>
-            <h2 class="stat-value" id="repStatOrders">—</h2>
-          </div>
-          <div class="stat-card">
-            <p class="stat-label">Avg. Order Value</p>
-            <h2 class="stat-value" id="repStatAvg">—</h2>
-          </div>
-          <div class="stat-card">
-            <p class="stat-label">Top Customer</p>
-            <h2 class="stat-value" id="repStatTopCustomer" style="font-size:16px;">—</h2>
-          </div>
-        </section>
-
-        <!-- Charts -->
-        <section class="reports-charts-grid">
-          <div class="admin-table-box reports-chart-box">
-            <h3 class="reports-chart-title">Revenue Over Time</h3>
-            <div class="reports-chart-canvas-wrap">
-              <canvas id="revenueChart"></canvas>
-            </div>
-          </div>
-          <div class="admin-table-box reports-chart-box">
-            <h3 class="reports-chart-title">Top Customers (by spend)</h3>
-            <div class="reports-chart-canvas-wrap">
-              <canvas id="topCustomersChart"></canvas>
-            </div>
-          </div>
-        </section>
-
-        <!-- Top customers table -->
-        <section class="admin-table-box">
-          <h3 class="reports-chart-title" style="padding:16px 16px 0;">Top Customers</h3>
-          <table class="admin-table">
-            <thead>
+            <tbody id="itemsTableBody">
               <tr>
-                <th>#</th>
-                <th>Customer</th>
-                <th>Orders</th>
-                <th>Total Spent</th>
-                <th>Contact</th>
+                <td colspan="6" class="items-mini-table__empty">
+                  Loading items…
+                </td>
               </tr>
-            </thead>
-            <tbody id="topCustomersTableBody">
-              <tr><td colspan="5" class="admin-table__empty">Loading…</td></tr>
             </tbody>
           </table>
-        </section>
-
-      </div>
-
-    </main>
-  </div>
-
-  <!-- Category add/edit modal -->
-  <div class="admin-modal-overlay" id="categoryModalOverlay" style="display:none">
-    <div class="admin-modal">
-      <div class="admin-modal__header">
-        <h3 id="categoryModalTitle">Add Category</h3>
-        <button class="sidebar-close-btn" id="categoryModalCloseBtn" aria-label="Close">✕</button>
-      </div>
-      <div class="admin-modal__body">
-        <input type="hidden" id="catId" />
-        <div class="form-group">
-          <label class="form-label" for="catName">Name *</label>
-          <input type="text" id="catName" class="form-input" placeholder="e.g. Dry clean with iron" />
-          <span class="field-error" id="err-catName"></span>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="catDescription">Description</label>
-          <input type="text" id="catDescription" class="form-input" placeholder="Short description" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="catPrice">Price (₹) *</label>
-          <input type="number" id="catPrice" class="form-input" placeholder="80" min="0" step="0.01" />
-          <span class="field-error" id="err-catPrice"></span>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="catUnit">Unit</label>
-          <input type="text" id="catUnit" class="form-input" placeholder="Per Piece" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="catIcon">Icon (emoji)</label>
-          <input type="text" id="catIcon" class="form-input" placeholder="👔" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="catImage">Image URL</label>
-          <input type="text" id="catImage" class="form-input" placeholder="https://…" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="catOrder">Display Order</label>
-          <input type="number" id="catOrder" class="form-input" placeholder="0" />
-        </div>
-        <div class="form-error-banner" id="catFormErrorBanner" style="display:none">
-          <span>⚠️</span>
-          <span id="catFormErrorMsg"></span>
-        </div>
-      </div>
-      <div class="admin-modal__footer">
-        <button class="btn-refresh" id="categorySaveBtn">Save</button>
       </div>
     </div>
-  </div>
 
-  <!-- Items-under-category modal: lists items for one category, with add/edit -->
-  <div class="admin-modal-overlay" id="itemsModalOverlay" style="display:none">
-    <div class="admin-modal admin-modal--wide">
-      <div class="admin-modal__header">
-        <h3 id="itemsModalTitle">Items</h3>
-        <button class="sidebar-close-btn" id="itemsModalCloseBtn" aria-label="Close">✕</button>
-      </div>
-      <div class="admin-modal__body">
-        <div class="items-modal-subhead">
-          <h4 id="itemsModalSubhead"></h4>
-          <button class="btn-refresh" id="addItemBtn">+ Add Item</button>
+    <!-- Item add/edit modal (sits on top of the items list modal) -->
+    <div
+      class="admin-modal-overlay"
+      id="itemModalOverlay"
+      style="display: none"
+    >
+      <div class="admin-modal">
+        <div class="admin-modal__header">
+          <h3 id="itemModalTitle">Add Item</h3>
+          <button
+            class="sidebar-close-btn"
+            id="itemModalCloseBtn"
+            aria-label="Close"
+          >
+            ✕
+          </button>
         </div>
-        <table class="items-mini-table">
-          <thead>
-            <tr>
-              <th>Icon</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Unit</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="itemsTableBody">
-            <tr><td colspan="6" class="items-mini-table__empty">Loading items…</td></tr>
-          </tbody>
-        </table>
+        <div class="admin-modal__body">
+          <input type="hidden" id="itemId" />
+          <input type="hidden" id="itemServiceId" />
+          <div class="form-group">
+            <label class="form-label" for="itemName">Name *</label>
+            <input
+              type="text"
+              id="itemName"
+              class="form-input"
+              placeholder="e.g. Shirt / T-Shirt"
+            />
+            <span class="field-error" id="err-itemName"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="itemPrice">Price (₹) *</label>
+            <input
+              type="number"
+              id="itemPrice"
+              class="form-input"
+              placeholder="8"
+              min="0"
+              step="0.01"
+            />
+            <span class="field-error" id="err-itemPrice"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="itemUnit">Unit</label>
+            <input
+              type="text"
+              id="itemUnit"
+              class="form-input"
+              placeholder="per piece"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="itemIcon">Icon (emoji)</label>
+            <input
+              type="text"
+              id="itemIcon"
+              class="form-input"
+              placeholder="👕"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="itemImage">Image URL</label>
+            <input
+              type="text"
+              id="itemImage"
+              class="form-input"
+              placeholder="https://…"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="itemOrder">Display Order</label>
+            <input
+              type="number"
+              id="itemOrder"
+              class="form-input"
+              placeholder="0"
+            />
+          </div>
+          <div
+            class="form-error-banner"
+            id="itemFormErrorBanner"
+            style="display: none"
+          >
+            <span>⚠️</span>
+            <span id="itemFormErrorMsg"></span>
+          </div>
+        </div>
+        <div class="admin-modal__footer">
+          <button class="btn-refresh" id="itemSaveBtn">Save</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Item add/edit modal (sits on top of the items list modal) -->
-  <div class="admin-modal-overlay" id="itemModalOverlay" style="display:none">
-    <div class="admin-modal">
-      <div class="admin-modal__header">
-        <h3 id="itemModalTitle">Add Item</h3>
-        <button class="sidebar-close-btn" id="itemModalCloseBtn" aria-label="Close">✕</button>
-      </div>
-      <div class="admin-modal__body">
-        <input type="hidden" id="itemId" />
-        <input type="hidden" id="itemServiceId" />
-        <div class="form-group">
-          <label class="form-label" for="itemName">Name *</label>
-          <input type="text" id="itemName" class="form-input" placeholder="e.g. Shirt / T-Shirt" />
-          <span class="field-error" id="err-itemName"></span>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="itemPrice">Price (₹) *</label>
-          <input type="number" id="itemPrice" class="form-input" placeholder="8" min="0" step="0.01" />
-          <span class="field-error" id="err-itemPrice"></span>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="itemUnit">Unit</label>
-          <input type="text" id="itemUnit" class="form-input" placeholder="per piece" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="itemIcon">Icon (emoji)</label>
-          <input type="text" id="itemIcon" class="form-input" placeholder="👕" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="itemImage">Image URL</label>
-          <input type="text" id="itemImage" class="form-input" placeholder="https://…" />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="itemOrder">Display Order</label>
-          <input type="number" id="itemOrder" class="form-input" placeholder="0" />
-        </div>
-        <div class="form-error-banner" id="itemFormErrorBanner" style="display:none">
-          <span>⚠️</span>
-          <span id="itemFormErrorMsg"></span>
-        </div>
-      </div>
-      <div class="admin-modal__footer">
-        <button class="btn-refresh" id="itemSaveBtn">Save</button>
-      </div>
-    </div>
-  </div>
+    <!-- Toast -->
+    <div class="admin-toast" id="adminToast"></div>
 
-  <!-- Toast -->
-  <div class="admin-toast" id="adminToast"></div>
-
-  <!-- Scripts -->
-  <!-- Chart.js: draws the revenue/top-customers charts on the Reports page -->
-  <!-- Loaded locally (not from a CDN) so it isn't blocked by network/firewall restrictions -->
-  <script src="../js/vendor/chart.umd.min.js"></script>
-  <!-- SheetJS: builds the .xlsx file for "Export to Excel" client-side, no backend needed -->
-  <script src="../js/vendor/xlsx.full.min.js"></script>
-  <script src="../js/auth.js"></script>
-  <script src="../js/api.js"></script>
-  <script src="../js/admin-dashboard.js"></script>
-  <script src="../js/admin-reports.js"></script>
-</body>
+    <!-- Scripts -->
+    <!-- Chart.js: draws the revenue/top-customers charts on the Reports page -->
+    <!-- Loaded locally (not from a CDN) so it isn't blocked by network/firewall restrictions -->
+    <script src="../js/vendor/chart.umd.min.js"></script>
+    <!-- SheetJS: builds the .xlsx file for "Export to Excel" client-side, no backend needed -->
+    <script src="../js/vendor/xlsx.full.min.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/admin-dashboard.js"></script>
+    <script src="../js/admin-reports.js"></script>
+  </body>
 </html>
