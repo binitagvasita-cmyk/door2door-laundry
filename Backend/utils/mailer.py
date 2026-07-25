@@ -27,7 +27,13 @@ def generate_otp(length: int = 6) -> str:
 def _send(msg: MIMEMultipart) -> bool:
     """Internal SMTP sender. Returns True on success."""
     try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        # NOTE: timeout=10 added — without this, a slow/unreachable SMTP
+        # connection (common on Render's free tier) can hang indefinitely,
+        # which causes Gunicorn to force-kill the whole worker mid-request
+        # (SystemExit, 500, dropped connection). With a timeout set, a
+        # slow connection instead raises a normal exception that the
+        # caller can catch.
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as server:
             server.login(config.GMAIL_USER, config.GMAIL_APP_PASSWORD)
             server.send_message(msg)
         return True

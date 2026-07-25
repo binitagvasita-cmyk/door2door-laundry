@@ -6,6 +6,7 @@
 #  PATCH /api/orders/<id>/cancel
 # ============================================================
 
+import threading
 from flask import Blueprint, request
 from utils.db import query_all, query_one, execute
 from utils.helpers import login_required, success, error
@@ -90,44 +91,53 @@ def create_order():
     if new_id == -1:
         return error("Could not place order. Please try again.", 500)
 
-    # ── Send confirmation email (non-blocking; failure is logged not raised) ──
-    try:
-        send_order_confirmation_email(
-            to_email=user["email"],
-            user_name=user["full_name"],
-            order_id=new_id,
-            service_name=svc["name"],
-            item_name=item_name,
-            quantity=quantity,
-            total_amount=float(total_amount) if total_amount else None,
-            pickup_date=pickup_date,
-            pickup_time=pickup_time,
-            delivery_address=delivery_address,
-            payment_method=payment_method,
-            special_instructions=special_instructions,
-        )
-    except Exception as mail_err:
-        print(f"[Orders] Email send failed (non-fatal): {mail_err}")
+    # ── Send confirmation + admin notification emails in the background ──
+    # IMPORTANT: these run on a separate thread so a slow or unreachable
+    # SMTP server (smtp.gmail.com from Render's free tier can be slow or
+    # blocked) can never delay or crash the HTTP response. Previously this
+    # ran synchronously and, combined with no SMTP timeout, could hang long
+    # enough for Gunicorn's worker timeout to kill the whole request with
+    # a 500 and a dropped connection (which showed up in the browser as a
+    # misleading CORS error, since no response was ever sent).
+    def _send_order_emails():
+        try:
+            send_order_confirmation_email(
+                to_email=user["email"],
+                user_name=user["full_name"],
+                order_id=new_id,
+                service_name=svc["name"],
+                item_name=item_name,
+                quantity=quantity,
+                total_amount=float(total_amount) if total_amount else None,
+                pickup_date=pickup_date,
+                pickup_time=pickup_time,
+                delivery_address=delivery_address,
+                payment_method=payment_method,
+                special_instructions=special_instructions,
+            )
+        except Exception as mail_err:
+            print(f"[Orders] Email send failed (non-fatal): {mail_err}")
 
-    # ── Notify admin of the new order (non-blocking) ──────────
-    try:
-        send_admin_order_notification_email(
-            order_id=new_id,
-            customer_name=user["full_name"],
-            customer_email=user["email"],
-            customer_phone=user.get("phone"),
-            service_name=svc["name"],
-            item_name=item_name,
-            quantity=quantity,
-            total_amount=float(total_amount) if total_amount else None,
-            pickup_date=pickup_date,
-            pickup_time=pickup_time,
-            delivery_address=delivery_address,
-            payment_method=payment_method,
-            special_instructions=special_instructions,
-        )
-    except Exception as mail_err:
-        print(f"[Orders] Admin notification email failed (non-fatal): {mail_err}")
+        try:
+            send_admin_order_notification_email(
+                order_id=new_id,
+                customer_name=user["full_name"],
+                customer_email=user["email"],
+                customer_phone=user.get("phone"),
+                service_name=svc["name"],
+                item_name=item_name,
+                quantity=quantity,
+                total_amount=float(total_amount) if total_amount else None,
+                pickup_date=pickup_date,
+                pickup_time=pickup_time,
+                delivery_address=delivery_address,
+                payment_method=payment_method,
+                special_instructions=special_instructions,
+            )
+        except Exception as mail_err:
+            print(f"[Orders] Admin notification email failed (non-fatal): {mail_err}")
+
+    threading.Thread(target=_send_order_emails, daemon=True).start()
 
     return success(
         data={"orderId": new_id},
