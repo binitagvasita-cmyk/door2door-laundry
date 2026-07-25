@@ -16,7 +16,7 @@ def get_db():
     """
     ssl_args = {}
     if config.FLASK_ENV == "production":
-        ssl_args = {"ssl": {"ca": "/etc/ssl/certs/ca-certificates.crt"}}
+        ssl_args = {"ssl_mode": "REQUIRED"}
 
     try:
         conn = MySQLdb.connect(

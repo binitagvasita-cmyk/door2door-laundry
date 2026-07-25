@@ -1,7 +1,7 @@
 flask
 flask-cors
 flask-mysqldb
-mysqlclient
+mysqlclient>=2.1.0
 python-dotenv
 gunicorn
 PyJWT
