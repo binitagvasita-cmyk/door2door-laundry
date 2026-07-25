@@ -14,7 +14,9 @@
 // ── Base URL (auto-detected) ────────────────────────────────────
 const PRODUCTION_API_BASE = "https://door2door-laundry.onrender.com/api";
 const LOCAL_API_BASE = "http://127.0.0.1:5001/api";
-const _isLocalHost = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
+const _isLocalHost = ["localhost", "127.0.0.1", ""].includes(
+  window.location.hostname
+);
 const API_BASE = _isLocalHost ? LOCAL_API_BASE : PRODUCTION_API_BASE;
 
 // ── Helpers ───────────────────────────────────────────────────
