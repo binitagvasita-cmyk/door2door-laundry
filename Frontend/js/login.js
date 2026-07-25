@@ -112,8 +112,9 @@ function validateField(fieldId) {
 }
 
 function validateAll() {
-  // NB: must NOT short-circuit with && — both fields need their
-  // error state set even if the first one is already invalid.
+  // Run both so the user sees errors on both fields at once, but
+  // combine with a proper boolean AND (not bitwise &, which produced
+  // a truthy-but-wrong numeric result instead of a clean boolean).
   const emailOk = validateField("email");
   const passwordOk = validateField("password");
   return emailOk && passwordOk;

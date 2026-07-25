@@ -1,39 +1,43 @@
 /* ============================================================
    Door2Door Laundry — api.js
    ALL fetch() calls live here.
-   To switch from dev → production, change API_BASE only.
+
+   API_BASE auto-detects local vs. production — no manual edit
+   needed before deploying. On localhost/127.0.0.1 it talks to the
+   local Flask dev server; anywhere else (e.g. your Vercel domain)
+   it talks to the deployed Render backend below.
+   Override PRODUCTION_API_BASE if your backend URL ever changes.
    ============================================================ */
 
 "use strict";
 
-// ── Base URL ──────────────────────────────────────────────────
-// Auto-detects environment so nobody has to remember to flip a
-// comment before deploying. Loopback hostnames → local Flask dev
-// server; anything else (Vercel, custom domain, etc.) → the live
-// production API. Override PRODUCTION_API_BASE with your real
-// backend URL once it's deployed (Render/Railway/etc — see the
-// deployment notes shipped with this project).
-const PRODUCTION_API_BASE = "https://door2door-laundry-api.onrender.com/api";
+// ── Base URL (auto-detected) ────────────────────────────────────
+const PRODUCTION_API_BASE = "https://door2door-laundry.onrender.com/api";
 const LOCAL_API_BASE = "http://127.0.0.1:5001/api";
 const _isLocalHost = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
 const API_BASE = _isLocalHost ? LOCAL_API_BASE : PRODUCTION_API_BASE;
 
 // ── Helpers ───────────────────────────────────────────────────
-// `admin = true` reads/writes the AdminAuth token namespace instead
-// of the customer Auth namespace — keeps the two sessions from ever
-// touching each other's storage key (see auth.js for why this matters).
-function _getHeaders(requireAuth = false, admin = false) {
+// Customer-session headers (uses Auth)
+function _getHeaders(requireAuth = false) {
   const headers = { "Content-Type": "application/json" };
   if (requireAuth) {
-    const store = admin ? AdminAuth : Auth;
-    const token = store.getToken();
+    const token = Auth.getToken();
     if (token) headers["Authorization"] = `Bearer ${token}`;
   }
   return headers;
 }
 
+// Admin-session headers (uses AdminAuth) — kept fully separate from
+// the customer Auth store so an admin login in one tab can never be
+// mistaken for / overwrite a customer session in another tab.
 function _getAdminHeaders(requireAuth = false) {
-  return _getHeaders(requireAuth, true);
+  const headers = { "Content-Type": "application/json" };
+  if (requireAuth) {
+    const token = AdminAuth.getToken();
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+  }
+  return headers;
 }
 
 async function _handleResponse(res) {
@@ -70,7 +74,7 @@ const AuthAPI = {
     return data;
   },
 
-  /** Login and store JWT. Returns full response object. */
+  /** Customer login — stores JWT in the customer Auth store. */
   async login(email, password) {
     const res = await fetch(`${API_BASE}/auth/login`, {
       method: "POST",
@@ -81,7 +85,21 @@ const AuthAPI = {
     if (data.data?.token) Auth.setToken(data.data.token);
     return data;
   },
-  // Add inside AuthAPI object, after login():
+
+  /**
+   * Admin login — same endpoint, but stores the JWT in the separate
+   * AdminAuth store so it never collides with a customer session.
+   */
+  async adminLogin(email, password) {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: "POST",
+      headers: _getHeaders(),
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await _handleResponse(res);
+    if (data.data?.token) AdminAuth.setToken(data.data.token);
+    return data;
+  },
 
   async sendOtp(email, name = "") {
     const res = await fetch(`${API_BASE}/auth/send-otp`, {
@@ -100,6 +118,7 @@ const AuthAPI = {
     });
     return _handleResponse(res);
   },
+
   /** Fetch the logged-in user's profile (JWT required). */
   async getProfile() {
     const res = await fetch(`${API_BASE}/auth/profile`, {
@@ -109,9 +128,11 @@ const AuthAPI = {
   },
 
   /**
-   * Update the logged-in user's own name / phone / address fields.
-   * @param {Object} payload — any subset of { fullName, phone, streetAddress,
-   *   apartment, buildingName, landmark, pinCode, marketingOptIn }
+   * Save profile / address changes for the logged-in user.
+   * Accepts any subset of: fullName, phone, streetAddress, apartment,
+   * buildingName, landmark, pinCode, marketingOptIn.
+   * On success, merges the returned fields into the cached Auth user
+   * object so the UI reflects the change immediately.
    */
   async updateProfile(payload) {
     const res = await fetch(`${API_BASE}/auth/profile`, {
@@ -119,34 +140,21 @@ const AuthAPI = {
       headers: _getHeaders(true),
       body: JSON.stringify(payload),
     });
-    return _handleResponse(res);
+    const data = await _handleResponse(res);
+    if (data.data) {
+      const merged = { ...Auth.getUser(), ...data.data };
+      localStorage.setItem(Auth.USER_KEY, JSON.stringify(merged));
+    }
+    return data;
   },
 
-  /** Log out locally (clears JWT — no server call needed). */
+  /** Log out locally (clears customer JWT — no server call needed). */
   logout() {
     Auth.clearToken();
     window.location.href = "login.html";
   },
 
-  /**
-   * Admin login. Hits the SAME /api/auth/login endpoint as the
-   * customer login (the backend has one login route for everyone),
-   * but stores the resulting JWT under AdminAuth's own key instead
-   * of Auth's — so it can never collide with / overwrite a
-   * customer session open in another tab.
-   */
-  async adminLogin(email, password) {
-    const res = await fetch(`${API_BASE}/auth/login`, {
-      method: "POST",
-      headers: _getHeaders(),
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await _handleResponse(res);
-    if (data.data?.token) AdminAuth.setToken(data.data.token);
-    return data;
-  },
-
-  /** Log out of the admin session only (customer session untouched). */
+  /** Log out the admin session locally. */
   adminLogout() {
     AdminAuth.clearToken();
     localStorage.removeItem("d2d_admin");

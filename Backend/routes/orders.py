@@ -90,7 +90,7 @@ def create_order():
     if new_id == -1:
         return error("Could not place order. Please try again.", 500)
 
-    # ── Send confirmation email to the customer (non-blocking; failure is logged not raised) ──
+    # ── Send confirmation email (non-blocking; failure is logged not raised) ──
     try:
         send_order_confirmation_email(
             to_email=user["email"],
@@ -107,9 +107,9 @@ def create_order():
             special_instructions=special_instructions,
         )
     except Exception as mail_err:
-        print(f"[Orders] Customer email send failed (non-fatal): {mail_err}")
+        print(f"[Orders] Email send failed (non-fatal): {mail_err}")
 
-    # ── Notify admin inbox of the new order (non-blocking; failure is logged not raised) ──
+    # ── Notify admin of the new order (non-blocking) ──────────
     try:
         send_admin_order_notification_email(
             order_id=new_id,
@@ -127,7 +127,7 @@ def create_order():
             special_instructions=special_instructions,
         )
     except Exception as mail_err:
-        print(f"[Orders] Admin notification email send failed (non-fatal): {mail_err}")
+        print(f"[Orders] Admin notification email failed (non-fatal): {mail_err}")
 
     return success(
         data={"orderId": new_id},

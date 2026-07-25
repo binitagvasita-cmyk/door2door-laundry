@@ -189,7 +189,7 @@ function renderTable() {
           <select class="status-select status-select--${o.status}" data-id="${o.id}" data-original="${o.status}">
             ${STATUS_ORDER.map((s) => `<option value="${s}" ${s === o.status ? "selected" : ""}>${STATUS_LABELS[s]}</option>`).join("")}
           </select>
-          <button class="btn-save-cell" data-id="${o.id}" title="Save status change">💾</button>
+          <button type="button" class="btn-save-cell" title="Save status change" style="display:none;">✓</button>
         </div>
       </td>
       <td data-label="Payment">
@@ -197,7 +197,7 @@ function renderTable() {
           <select class="payment-select payment-select--${o.payment_status || "pending"}" data-id="${o.id}" data-original="${o.payment_status || "pending"}">
             ${PAYMENT_ORDER.map((p) => `<option value="${p}" ${p === (o.payment_status || "pending") ? "selected" : ""}>${PAYMENT_LABELS[p]}</option>`).join("")}
           </select>
-          <button class="btn-save-cell" data-id="${o.id}" title="Save payment change">💾</button>
+          <button type="button" class="btn-save-cell" title="Save payment change" style="display:none;">✓</button>
         </div>
       </td>
       <td data-label="Contact">
@@ -211,26 +211,23 @@ function renderTable() {
     </tr>
   `).join("");
 
-  // Selecting a new value only stages the change (shows the Save button);
-  // it does NOT hit the API until the admin explicitly clicks Save. This
-  // avoids accidentally updating a live order's status/payment just from
-  // browsing the dropdown.
   tbody.querySelectorAll(".status-select").forEach((sel) => {
     sel.addEventListener("change", () => toggleSaveButton(sel));
   });
   tbody.querySelectorAll(".payment-select").forEach((sel) => {
     sel.addEventListener("change", () => toggleSaveButton(sel));
   });
-  tbody.querySelectorAll(".status-select ~ .btn-save-cell").forEach((btn) => {
+  tbody.querySelectorAll(".status-select + .btn-save-cell").forEach((btn) => {
     btn.addEventListener("click", onStatusSave);
   });
-  tbody.querySelectorAll(".payment-select ~ .btn-save-cell").forEach((btn) => {
+  tbody.querySelectorAll(".payment-select + .btn-save-cell").forEach((btn) => {
     btn.addEventListener("click", onPaymentSave);
   });
 }
 
-/* Show the Save button only while the select's value differs from what's
-   actually saved; hide it again if the admin flips it back manually. */
+/* ── Stage-then-save: only show the Save button once the dropdown
+   value actually differs from what's saved; the API call only fires
+   when Save is clicked, not on every dropdown change. ── */
 function toggleSaveButton(select) {
   const saveBtn = select.parentElement.querySelector(".btn-save-cell");
   if (!saveBtn) return;
@@ -291,11 +288,12 @@ function renderContactActions(name, phone, waMessage) {
   `;
 }
 
-/* ── Status update (fires on Save click, not on select change) ──────── */
+/* ── Status update (fires only on Save click, not on dropdown change) ── */
 async function onStatusSave(e) {
   const saveBtn = e.currentTarget;
   const select = saveBtn.parentElement.querySelector(".status-select");
   if (!select) return;
+
   const orderId = select.dataset.id;
   const newStatus = select.value;
   const prevClass = [...select.classList].find((c) => c.startsWith("status-select--"));
@@ -326,11 +324,12 @@ async function onStatusSave(e) {
   }
 }
 
-/* ── Payment status update (fires on Save click, not on select change) ── */
+/* ── Payment status update (fires only on Save click) ──────────── */
 async function onPaymentSave(e) {
   const saveBtn = e.currentTarget;
   const select = saveBtn.parentElement.querySelector(".payment-select");
   if (!select) return;
+
   const orderId = select.dataset.id;
   const newStatus = select.value;
   const prevClass = [...select.classList].find((c) => c.startsWith("payment-select--"));

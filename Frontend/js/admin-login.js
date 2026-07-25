@@ -66,9 +66,6 @@ async function submitAdminLogin() {
   spinner.style.display = "inline-block";
 
   try {
-    // Uses the dedicated admin login helper — stores the JWT under
-    // AdminAuth's own localStorage key, never touching (or being
-    // touched by) a customer session open in another tab.
     const data = await AuthAPI.adminLogin(email, password);
 
     if (!data.data || !data.data.isAdmin) {

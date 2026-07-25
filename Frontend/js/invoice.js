@@ -93,16 +93,15 @@ function renderInvoice(o) {
 }
 
 async function boot() {
-  // This page is opened from two different places: the admin dashboard's
-  // "🧾 Bill" link (any order) and the customer's "Download Bill" button
-  // (their own orders only). We can't tell which just from the URL, so we
-  // check which session is actually logged in — using the separate
-  // AdminAuth / Auth namespaces (see auth.js) rather than a flag on the
-  // customer user object, which was never populated with isAdmin and made
-  // this detection silently always fail.
-  const isAdminView = !!(window.AdminAuth && AdminAuth.isLoggedIn() && localStorage.getItem("d2d_admin"));
+  // This page is shared by both the customer (track-order → Download
+  // Bill) and the admin (dashboard → Bill button, opened in a new tab).
+  // Auth and AdminAuth are fully separate sessions, so check for an
+  // active admin session first — it's the only reliable way to tell
+  // which API (and which data-access rules) to use.
+  const isAdmin = !!(window.AdminAuth && AdminAuth.isLoggedIn() && localStorage.getItem("d2d_admin"));
+  const isCustomer = !!(window.Auth && Auth.isLoggedIn());
 
-  if (!isAdminView && (!window.Auth || !Auth.isLoggedIn())) {
+  if (!isAdmin && !isCustomer) {
     const returnTo = encodeURIComponent(window.location.href);
     window.location.href = `login.html?returnTo=${returnTo}`;
     return;
@@ -116,7 +115,7 @@ async function boot() {
   }
 
   try {
-    const res = isAdminView
+    const res = isAdmin
       ? await AdminAPI.getInvoice(orderId)
       : await OrdersAPI.getInvoice(orderId);
     if (!res?.data) throw new Error("Bill not found.");

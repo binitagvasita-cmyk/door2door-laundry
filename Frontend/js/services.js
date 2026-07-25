@@ -135,9 +135,9 @@ async function loadServices() {
     renderTabs(data.data);
     renderAllPanels(data.data);
     initReveal();
-    // Default to "All Services" — previously defaulted to the first
-    // service by display_order (curtain wash has display_order 0, so
-    // it was winning the sort and showing pre-filtered instead of "all").
+    // Default to "All Services" rather than the first service by
+    // display_order (which happened to be "curtain wash", not a
+    // sensible default for first-time visitors).
     activateTab("all");
   } catch (err) {
     skeleton.style.display = "none";
@@ -405,7 +405,7 @@ const BookingModal = {
   currentItem: null,
   _userProfile: null,   // cached profile fetched from /api/auth/profile
   _profileFetched: false,
-  _lastOrder: null,     // cached most recent order, used to suggest an address
+  _lastOrder: null,        // cached most recent order, used as an address fallback
   _lastOrderFetched: false,
 
   /* ── Init (called once) ─────────────────────────────────── */
@@ -798,7 +798,7 @@ const BookingModal = {
         this._profileFetched = true;
       }
 
-      // Build address string from saved profile fields
+      // Build address string from profile fields
       const parts = [
         profile.apartment,
         profile.building_name,
@@ -807,26 +807,27 @@ const BookingModal = {
       ].filter(Boolean);
       let addressStr = parts.join(", ");
       let pinCode = profile.pin_code || "";
-      let bannerNote = addressStr ? ` · Address auto-filled` : "";
+      let addressSource = addressStr ? "profile" : null;
 
-      // No saved profile address? Fall back to suggesting the delivery
-      // address from their most recent order instead of leaving it blank —
-      // still fully editable, just a head start.
+      // No saved profile address — fall back to the address used on the
+      // customer's most recent order, so returning customers without a
+      // saved profile address still get something pre-filled instead of
+      // an empty field.
       if (!addressStr) {
         try {
           if (!this._lastOrderFetched) {
-            const ordersRes = await OrdersAPI.getMyOrders(); // newest-first (see routes/orders.py)
-            this._lastOrder = (ordersRes?.data || [])[0] || null;
+            const ordersResp = await OrdersAPI.getMyOrders();
+            const orders = ordersResp?.data || [];
+            this._lastOrder = orders.length ? orders[0] : null; // API returns newest first
             this._lastOrderFetched = true;
           }
           if (this._lastOrder?.delivery_address) {
             addressStr = this._lastOrder.delivery_address;
-            if (this._lastOrder.pin_code) pinCode = this._lastOrder.pin_code;
-            bannerNote =
-              ` · Suggested from your last order — edit if it's changed, or <a href="profile.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">save it to your profile</a> for next time`;
+            pinCode = this._lastOrder.pin_code || pinCode;
+            addressSource = "lastOrder";
           }
-        } catch (_) {
-          // No past orders / request failed — leave address blank, handled below.
+        } catch (ordersErr) {
+          console.warn("[BookingModal] Could not fetch last order for address fallback:", ordersErr.message);
         }
       }
 
@@ -838,16 +839,24 @@ const BookingModal = {
         document.getElementById("bmPinCode").value = pinCode;
       }
 
-      // Show banner. If there's genuinely nothing to suggest (no saved
-      // profile address AND no past orders), let the customer know why the
-      // field below is blank instead of leaving them guessing.
+      // Show a banner whose wording matches where the address came from
       const name = profile.full_name || cached.name || "";
-      if (name || addressStr) {
-        const banner = document.getElementById("bmUserBanner");
-        document.getElementById("bmUserBannerText").innerHTML =
-          `✅ Booking as <strong>${escapeHtml(name)}</strong>` +
-          (bannerNote ||
-            ` · No saved address yet — type it below, or <a href="profile.html" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">add one to your profile</a> for next time`);
+      const banner = document.getElementById("bmUserBanner");
+      const bannerText = document.getElementById("bmUserBannerText");
+      if (name || addressStr || !addressSource) {
+        let suffix = "";
+        if (addressSource === "profile") {
+          suffix = " · Address auto-filled";
+        } else if (addressSource === "lastOrder") {
+          suffix =
+            " · Suggested from your last order — edit if it's changed, " +
+            'or <a href="profile.html" style="color:inherit;text-decoration:underline;">save it to your profile</a> for next time';
+        } else {
+          suffix =
+            ' · No saved address yet — type it below, or ' +
+            '<a href="profile.html" style="color:inherit;text-decoration:underline;">add one to your profile</a> for next time';
+        }
+        bannerText.innerHTML = `✅ Booking as <strong>${escapeHtml(name)}</strong>${suffix}`;
         banner.style.display = "";
       }
     } catch (err) {
@@ -1131,8 +1140,8 @@ const BookingModal = {
         </button>
       `;
 
-      // Invalidate profile / last-order caches so the next booking re-fetches
-      // fresh (e.g. picks up this order as the new "last order" suggestion)
+      // Invalidate profile + last-order cache so next booking fetches fresh
+      // (address may have changed, or this order should become the new fallback)
       this._userProfile = null;
       this._lastOrderFetched = false;
 

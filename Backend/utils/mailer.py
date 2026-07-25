@@ -227,115 +227,14 @@ def send_order_confirmation_email(
 
 
 # ════════════════════════════════════════════════════════════
-#  ORDER STATUS UPDATE EMAIL (customer-facing)
-#  Sent whenever the admin moves an order to a new status, so the
-#  customer doesn't have to keep refreshing the tracking page.
-# ════════════════════════════════════════════════════════════
-
-_STATUS_COPY = {
-    "confirmed": {
-        "emoji": "✅",
-        "title": "Order Confirmed!",
-        "line": "Your laundry pickup has been <strong style='color:#42BABC;'>confirmed</strong>.",
-    },
-    "picked_up": {
-        "emoji": "🚚",
-        "title": "Picked Up!",
-        "line": "Our team has <strong style='color:#42BABC;'>picked up</strong> your laundry.",
-    },
-    "in_process": {
-        "emoji": "🧺",
-        "title": "Being Washed!",
-        "line": "Your laundry is now <strong style='color:#42BABC;'>being cleaned</strong> with care.",
-    },
-    "out_for_delivery": {
-        "emoji": "🚗",
-        "title": "Out for Delivery!",
-        "line": "Your fresh laundry is <strong style='color:#42BABC;'>on its way back to you</strong>.",
-    },
-    "delivered": {
-        "emoji": "🎉",
-        "title": "Delivered!",
-        "line": "Your order has been <strong style='color:#42BABC;'>delivered</strong>. Thank you for choosing us!",
-    },
-    "cancelled": {
-        "emoji": "❌",
-        "title": "Order Cancelled",
-        "line": "This order has been <strong style='color:#E05252;'>cancelled</strong>.",
-    },
-}
-
-
-def send_order_status_update_email(
-    to_email: str,
-    user_name: str,
-    order_id: int,
-    new_status: str,
-    service_name: str,
-    pickup_date: str,
-    pickup_time: str | None,
-    delivery_address: str,
-) -> bool:
-    """
-    Notify the customer that their order moved to a new status.
-    Silently does nothing (returns False) for statuses we don't have
-    copy for (e.g. 'pending', which is the starting state already
-    covered by the order-confirmation email). Returns True on success.
-    """
-    copy = _STATUS_COPY.get(new_status)
-    if not copy:
-        return False
-
-    greeting  = f"Hi {user_name}," if user_name else "Hello,"
-    pickup_str = pickup_date
-    if pickup_time:
-        pickup_str += f" at {pickup_time}"
-
-    body = (
-        f"<p style='color:#1a2e2e;font-size:16px;margin:0 0 8px;'>{greeting}</p>"
-        f"<p style='color:#4a6a6a;font-size:15px;line-height:1.6;margin:0 0 24px;'>{copy['line']}</p>"
-        "<div style='background:#e8f9f9;border-radius:12px;padding:18px 20px;margin-bottom:20px;'>"
-        f"<p style='color:#1a2e2e;font-size:14px;font-weight:700;margin:0 0 6px;'>Order #{order_id} · {service_name}</p>"
-        f"<p style='color:#4a6a6a;font-size:13px;line-height:1.6;margin:0;'>"
-        f"Pickup: {pickup_str}<br>Address: {delivery_address}</p>"
-        "</div>"
-        "<p style='color:#8aadad;font-size:12px;line-height:1.6;margin:0;'>"
-        "Track this order anytime from the Track Order page. "
-        "Questions? Reply to this email or call/WhatsApp us anytime.</p>"
-    )
-
-    text = (
-        f"{greeting}\n\n"
-        f"Order #{order_id} update: {copy['title']}\n\n"
-        f"Service: {service_name}\nPickup: {pickup_str}\nAddress: {delivery_address}\n\n"
-        "-- Door2Door Laundry Team"
-    )
-
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"{copy['emoji']} Order #{order_id} — {copy['title']}"
-    msg["From"]    = formataddr(("Door2Door Laundry", config.GMAIL_USER))
-    msg["To"]      = to_email
-    msg.attach(MIMEText(text, "plain", "utf-8"))
-    msg.attach(MIMEText(
-        _base_html(f"{copy['title']} {copy['emoji']}", f"Order #{order_id} · {service_name}", body),
-        "html", "utf-8"
-    ))
-
-    ok = _send(msg)
-    if not ok:
-        print(f"[Email] Failed to send status update ({new_status}) to {to_email}")
-    return ok
-
-
-# ════════════════════════════════════════════════════════════
-#  ADMIN NEW-ORDER NOTIFICATION EMAIL
+#  ADMIN — NEW ORDER NOTIFICATION EMAIL
 # ════════════════════════════════════════════════════════════
 
 def send_admin_order_notification_email(
     order_id: int,
     customer_name: str,
     customer_email: str,
-    customer_phone: str,
+    customer_phone: str | None,
     service_name: str,
     item_name: str | None,
     quantity: int,
@@ -346,14 +245,7 @@ def send_admin_order_notification_email(
     payment_method: str,
     special_instructions: str | None = None,
 ) -> bool:
-    """
-    Notify the admin inbox (config.ADMIN_NOTIFICATION_EMAIL) whenever a
-    customer places a new order. Returns True on success, False on failure.
-    """
-    to_email = config.ADMIN_NOTIFICATION_EMAIL
-    if not to_email:
-        print("[Email] ADMIN_NOTIFICATION_EMAIL is not configured — skipping admin notification.")
-        return False
+    """Notify the admin inbox whenever a customer places a new order."""
 
     display_item = item_name or service_name
     pay_label    = "💳 Online / UPI" if payment_method == "online" else "💵 Cash on Delivery"
@@ -372,23 +264,24 @@ def send_admin_order_notification_email(
             "</tr>"
         )
 
-    rows  = row("Order #",        f"<strong>#{order_id}</strong>")
-    rows += row("Customer",       customer_name)
-    rows += row("Email",          customer_email)
-    rows += row("Phone",          customer_phone or "—")
-    rows += row("Service",        service_name)
+    rows  = row("Order #",   f"<strong>#{order_id}</strong>")
+    rows += row("Customer",  customer_name)
+    rows += row("Email",     customer_email)
+    if customer_phone:
+        rows += row("Phone", customer_phone)
+    rows += row("Service",   service_name)
     rows += row("Item / Garment", display_item)
-    rows += row("Quantity",       str(quantity))
-    rows += row("Pickup",         pickup_str)
-    rows += row("Address",        delivery_address)
-    rows += row("Payment",        pay_label)
+    rows += row("Quantity",  str(quantity))
+    rows += row("Pickup",    pickup_str)
+    rows += row("Address",   delivery_address)
+    rows += row("Payment",   pay_label)
     if special_instructions:
         rows += row("Instructions", special_instructions)
 
     body = (
-        "<p style='color:#1a2e2e;font-size:16px;margin:0 0 6px;'>New order received!</p>"
+        "<p style='color:#1a2e2e;font-size:16px;margin:0 0 6px;'>New order placed! 🔔</p>"
         "<p style='color:#4a6a6a;font-size:15px;line-height:1.6;margin:0 0 24px;'>"
-        f"<strong>{customer_name}</strong> just placed a new order. Details below:</p>"
+        "A customer just booked a pickup. Details below:</p>"
 
         "<div style='border-radius:12px;overflow:hidden;border:1.5px solid #ddf0f0;margin-bottom:24px;'>"
         "<table width='100%' cellpadding='0' cellspacing='0' style='border-collapse:collapse;'>"
@@ -403,34 +296,131 @@ def send_admin_order_notification_email(
         "</div>"
 
         "<p style='color:#8aadad;font-size:12px;line-height:1.6;margin:0;'>"
-        "Log in to the admin dashboard to confirm pickup and update the order status.</p>"
+        "Log in to the admin dashboard to confirm and manage this order.</p>"
     )
 
     text = (
-        f"New order #{order_id} placed by {customer_name}\n\n"
-        f"Customer email: {customer_email}\n"
-        f"Customer phone: {customer_phone or '—'}\n"
+        "New order placed!\n\n"
+        f"Order #{order_id}\n"
+        f"Customer: {customer_name} ({customer_email}"
+        + (f", {customer_phone}" if customer_phone else "") + ")\n"
         f"Service: {service_name}\n"
         f"Item: {display_item}\n"
         f"Quantity: {quantity}\n"
         f"Pickup: {pickup_str}\n"
         f"Address: {delivery_address}\n"
         f"Payment: {pay_label}\n"
-        f"Total: {total_str}\n\n"
-        "Log in to the admin dashboard to manage this order."
+        f"Total: {total_str}\n"
     )
 
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"🧺 New Order #{order_id} — {customer_name}"
+    msg["Subject"] = f"🔔 New Order #{order_id} — {customer_name}"
     msg["From"]    = formataddr(("Door2Door Laundry", config.GMAIL_USER))
-    msg["To"]      = to_email
+    msg["To"]      = config.ADMIN_NOTIFICATION_EMAIL
     msg.attach(MIMEText(text, "plain", "utf-8"))
     msg.attach(MIMEText(
-        _base_html("New Order! 🧺", f"Order #{order_id} · {pickup_str}", body),
+        _base_html("New Order! 🔔", f"Order #{order_id} · {customer_name}", body),
         "html", "utf-8"
     ))
 
     ok = _send(msg)
     if not ok:
         print(f"[Email] Failed to send admin notification for order {order_id}")
+    return ok
+
+
+# ════════════════════════════════════════════════════════════
+#  ORDER STATUS UPDATE EMAIL (customer-facing)
+# ════════════════════════════════════════════════════════════
+
+_STATUS_COPY = {
+    "confirmed": {
+        "emoji": "✅",
+        "title": "Order Confirmed",
+        "line": "Your order has been confirmed and is scheduled for pickup.",
+    },
+    "picked_up": {
+        "emoji": "🚗",
+        "title": "Picked Up",
+        "line": "Our team has picked up your laundry and it's on its way to us.",
+    },
+    "in_process": {
+        "emoji": "✨",
+        "title": "Being Washed",
+        "line": "Your clothes are being cleaned with care right now.",
+    },
+    "out_for_delivery": {
+        "emoji": "📦",
+        "title": "Out for Delivery",
+        "line": "Your freshly cleaned laundry is on its way back to you!",
+    },
+    "delivered": {
+        "emoji": "🎉",
+        "title": "Delivered",
+        "line": "Your order has been delivered. Thank you for choosing Door2Door Laundry!",
+    },
+    "cancelled": {
+        "emoji": "❌",
+        "title": "Order Cancelled",
+        "line": "Your order has been cancelled. Contact us if this wasn't expected.",
+    },
+}
+
+
+def send_order_status_update_email(
+    to_email: str,
+    user_name: str,
+    order_id: int,
+    new_status: str,
+    service_name: str,
+    pickup_date: str,
+    pickup_time: str | None,
+    delivery_address: str,
+) -> bool:
+    """
+    Notify the customer whenever the admin changes an order's status.
+    Silently returns False (no email sent) for statuses with no copy defined
+    (e.g. "pending", which the customer already saw at checkout).
+    """
+    copy = _STATUS_COPY.get(new_status)
+    if not copy:
+        return False
+
+    greeting  = f"Hi {user_name}," if user_name else "Hello,"
+    pickup_str = pickup_date
+    if pickup_time:
+        pickup_str += f" at {pickup_time}"
+
+    body = (
+        f"<p style='color:#1a2e2e;font-size:16px;margin:0 0 6px;'>{greeting}</p>"
+        f"<p style='color:#4a6a6a;font-size:15px;line-height:1.6;margin:0 0 24px;'>{copy['line']}</p>"
+        "<div style='background:#e8f9f9;border-radius:12px;padding:18px 20px;margin-bottom:20px;'>"
+        f"<p style='color:#1a2e2e;font-size:14px;margin:4px 0;'><strong>Order #{order_id}</strong></p>"
+        f"<p style='color:#4a6a6a;font-size:13px;margin:4px 0;'>Service: {service_name}</p>"
+        f"<p style='color:#4a6a6a;font-size:13px;margin:4px 0;'>Pickup: {pickup_str}</p>"
+        f"<p style='color:#4a6a6a;font-size:13px;margin:4px 0;'>Address: {delivery_address}</p>"
+        "</div>"
+        "<p style='color:#8aadad;font-size:12px;line-height:1.6;margin:0;'>"
+        "Track your order anytime from the Door2Door Laundry website.</p>"
+    )
+
+    text = (
+        f"{greeting}\n\n{copy['line']}\n\n"
+        f"Order #{order_id}\nService: {service_name}\nPickup: {pickup_str}\n"
+        f"Address: {delivery_address}\n\n-- Door2Door Laundry Team"
+    )
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = f"{copy['emoji']} Order #{order_id} — {copy['title']}"
+    msg["From"]    = formataddr(("Door2Door Laundry", config.GMAIL_USER))
+    msg["To"]      = to_email
+    msg.attach(MIMEText(text, "plain", "utf-8"))
+    msg.attach(MIMEText(
+        _base_html(f"{copy['emoji']} {copy['title']}", f"Order #{order_id}", body),
+        "html", "utf-8"
+    ))
+
+    ok = _send(msg)
+    if not ok:
+        print(f"[Email] Failed to send status update ({new_status}) for order {order_id}")
     return ok

@@ -3,24 +3,13 @@
    JWT store / read / logout helper.
    Include this BEFORE api.js on every page.
 
-   ── FIX (cross-tab admin/client token collision) ─────────────
-   This file used to expose a single `Auth` object with ONE
-   localStorage key ("d2d_toke") that was written to by BOTH the
-   customer login (login.js) and the admin login (admin-login.js)
-   — because both pages load this same shared auth.js/api.js.
-
-   localStorage is shared across every tab of the same origin, so
-   logging into the admin dashboard in one tab silently overwrote
-   the JWT a customer was using in a completely different tab.
-   Any request that tab then made (e.g. placing an order) went out
-   with the ADMIN's token, so the order was recorded under the
-   admin's account instead of the real customer's.
-
-   Fix: two fully separate, independently-keyed auth namespaces —
-   `Auth` for the customer/client side and `AdminAuth` for the
-   admin side. They never read or write each other's storage key,
-   so an admin login in one tab can no longer hijack a customer
-   session (or vice versa) in another tab.
+   IMPORTANT: customer sessions and admin sessions use completely
+   separate localStorage keys (via _makeAuthStore). Previously both
+   shared the same keys, so logging into the admin panel in one tab
+   would silently hijack whatever customer session was open in
+   another tab — actions taken as "logged in customer" would
+   actually run as the admin. Auth and AdminAuth below never touch
+   each other's storage.
    ============================================================ */
 
 "use strict";
@@ -47,7 +36,8 @@ function _makeAuthStore(tokenKey, userKey) {
       return !!this.getToken();
     },
 
-    // Called after successful login.
+    // Called after successful login — kept separate from setToken
+    // so login.js code works without changes to this file
     loginSuccess(token, user) {
       this.setToken(token);
       if (user) localStorage.setItem(this.USER_KEY, JSON.stringify(user));
@@ -61,21 +51,16 @@ function _makeAuthStore(tokenKey, userKey) {
       }
     },
 
-    requireAuth(loginPage = "login.html") {
+    requireAuth() {
       if (!this.isLoggedIn()) {
         const returnTo = encodeURIComponent(window.location.href);
-        window.location.href = `${loginPage}?returnTo=${returnTo}`;
+        window.location.href = `login.html?returnTo=${returnTo}`;
       }
     },
   };
 }
 
-// Customer / client-side session — used by login.js, register.js,
-// profile.js, track-order.js, invoice.js, home.js, header.js, etc.
 const Auth = _makeAuthStore("d2d_client_token", "d2d_client_user");
-
-// Admin-side session — used only by admin-login.js / admin-dashboard.js /
-// admin-reports.js. Completely separate storage keys from `Auth` above.
 const AdminAuth = _makeAuthStore("d2d_admin_token", "d2d_admin_user");
 
 window.Auth = Auth;

@@ -164,31 +164,28 @@ def update_status(order_id):
 
     execute("UPDATE orders SET status = %s WHERE id = %s", (new_status, order_id))
 
-    # ── Notify the customer of the new status (non-blocking; same pattern ──
-    # as the order-confirmation email in routes/orders.py — a plain SMTP
-    # call wrapped in try/except so a mail hiccup never breaks the status
-    # update itself, on Render, Vercel, or anywhere else this runs).
+    # ── Notify the customer of the status change (non-blocking) ──
     try:
-        details = query_one(
+        full = query_one(
             """SELECT o.id, o.pickup_date, o.pickup_time, o.delivery_address,
-                      u.full_name AS customer_name, u.email AS customer_email,
-                      s.name AS service_name
+                      s.name AS service_name,
+                      u.full_name AS customer_name, u.email AS customer_email
                FROM orders o
-               JOIN users u ON u.id = o.user_id
                JOIN services s ON s.id = o.service_id
+               JOIN users u ON u.id = o.user_id
                WHERE o.id = %s""",
             (order_id,),
         )
-        if details:
+        if full:
             send_order_status_update_email(
-                to_email=details["customer_email"],
-                user_name=details["customer_name"],
-                order_id=order_id,
+                to_email=full["customer_email"],
+                user_name=full["customer_name"],
+                order_id=full["id"],
                 new_status=new_status,
-                service_name=details["service_name"],
-                pickup_date=str(details["pickup_date"]) if details["pickup_date"] else "",
-                pickup_time=details["pickup_time"],
-                delivery_address=details["delivery_address"],
+                service_name=full["service_name"],
+                pickup_date=str(full["pickup_date"]),
+                pickup_time=full["pickup_time"],
+                delivery_address=full["delivery_address"],
             )
     except Exception as mail_err:
         print(f"[Admin] Status update email failed (non-fatal): {mail_err}")

@@ -96,31 +96,31 @@
 
         <!-- ══ ACTIONS (right) ══ -->
         <div class="header-actions" id="headerActions">
-          <!-- Social — WhatsApp (real number) + Instagram (TODO: add real profile URL) -->
+          <!-- WhatsApp + Instagram — always visible -->
           <div class="header-social">
             <a
               href="https://wa.me/918460140501"
-              class="header-social-btn"
-              aria-label="WhatsApp"
-              title="WhatsApp"
+              class="header-social-btn header-social-btn--whatsapp"
               target="_blank"
               rel="noopener"
+              aria-label="Chat with us on WhatsApp"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.92 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.05 2h-.01zm5.8 14.03c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.88-1.24-4.76-4.14-4.9-4.33-.14-.19-1.17-1.56-1.17-2.98 0-1.42.74-2.11 1.01-2.4.26-.28.57-.36.76-.36h.55c.18 0 .41-.07.65.49.24.58.82 2 .89 2.14.07.15.12.32.02.52-.1.19-.15.31-.29.48-.15.17-.31.38-.44.51-.15.14-.3.3-.13.59.17.28.75 1.24 1.62 2.01 1.11 1 2.05 1.31 2.33 1.46.28.14.44.12.6-.07.17-.19.72-.84.91-1.13.19-.28.38-.24.65-.14.26.1 1.68.79 1.97.94.29.14.48.21.55.33.07.12.07.68-.17 1.35z"/>
               </svg>
             </a>
-            <!-- TODO: replace href="#" with the real Instagram profile URL once it exists -->
             <a
               href="#"
-              class="header-social-btn"
-              aria-label="Instagram"
-              title="Instagram"
+              class="header-social-btn header-social-btn--instagram"
+              target="_blank"
+              rel="noopener"
+              aria-label="Follow us on Instagram"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <circle cx="12" cy="12" r="5" />
-                <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+              <!-- TODO: replace href="#" with the real Instagram profile link once available -->
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
               </svg>
             </a>
           </div>
@@ -291,19 +291,31 @@
         </nav>
 
         <div class="mobile-actions">
-          <!-- Social — WhatsApp (real number) + Instagram (TODO: add real profile URL) -->
+          <!-- WhatsApp + Instagram in mobile -->
           <div class="mobile-social">
-            <a href="https://wa.me/918460140501" class="header-social-btn" aria-label="WhatsApp" title="WhatsApp" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            <a
+              href="https://wa.me/918460140501"
+              class="header-social-btn header-social-btn--whatsapp"
+              target="_blank"
+              rel="noopener"
+              aria-label="Chat with us on WhatsApp"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.92 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.05 2h-.01zm5.8 14.03c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.88-1.24-4.76-4.14-4.9-4.33-.14-.19-1.17-1.56-1.17-2.98 0-1.42.74-2.11 1.01-2.4.26-.28.57-.36.76-.36h.55c.18 0 .41-.07.65.49.24.58.82 2 .89 2.14.07.15.12.32.02.52-.1.19-.15.31-.29.48-.15.17-.31.38-.44.51-.15.14-.3.3-.13.59.17.28.75 1.24 1.62 2.01 1.11 1 2.05 1.31 2.33 1.46.28.14.44.12.6-.07.17-.19.72-.84.91-1.13.19-.28.38-.24.65-.14.26.1 1.68.79 1.97.94.29.14.48.21.55.33.07.12.07.68-.17 1.35z"/>
               </svg>
             </a>
-            <!-- TODO: replace href="#" with the real Instagram profile URL once it exists -->
-            <a href="#" class="header-social-btn" aria-label="Instagram" title="Instagram">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="2" width="20" height="20" rx="5" />
-                <circle cx="12" cy="12" r="5" />
-                <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+            <a
+              href="#"
+              class="header-social-btn header-social-btn--instagram"
+              target="_blank"
+              rel="noopener"
+              aria-label="Follow us on Instagram"
+            >
+              <!-- TODO: replace href="#" with the real Instagram profile link once available -->
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
               </svg>
             </a>
           </div>

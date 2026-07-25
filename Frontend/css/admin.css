@@ -435,9 +435,9 @@ h1, h2 {
 .payment-select--pending { background: #fff7e6; border-color: #f5d68a; color: #91650a; }
 .payment-select--paid    { background: #e6f9f0; border-color: #8ce0b3; color: #0a6b3a; }
 
-/* Wraps a status/payment <select> + its Save button so a dropdown change
-   is staged, not applied instantly — the admin has to explicitly confirm
-   before it hits the order. */
+/* Stage-then-save wrapper for the status/payment dropdowns — the
+   dropdown alone no longer updates the backend; a Save button
+   appears next to it only once its value has actually changed. */
 .select-cell {
   display: flex;
   align-items: center;
@@ -448,24 +448,24 @@ h1, h2 {
   flex: 1;
 }
 .btn-save-cell {
-  display: none; /* shown via JS once the select's value differs from what's saved */
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
   width: 30px;
   height: 30px;
-  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   border: 1.5px solid var(--teal);
   background: var(--teal);
-  color: var(--white);
-  font-size: 13px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
-  transition: filter .15s, transform .15s;
+  transition: background 0.15s ease, transform 0.1s ease;
 }
-.btn-save-cell:hover { filter: brightness(1.08); }
+.btn-save-cell:hover { background: var(--teal-dark); }
 .btn-save-cell:active { transform: scale(0.94); }
-.btn-save-cell:disabled { opacity: .6; cursor: default; }
+.btn-save-cell:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .btn-bill {
   display: inline-flex;

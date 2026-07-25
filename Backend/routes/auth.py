@@ -191,11 +191,6 @@ def profile():
 
 
 # ── PATCH /api/auth/profile ───────────────────────────────────
-# Update the logged-in user's own name / phone / address fields.
-# Was previously missing entirely — profile.js's "Save" buttons only
-# updated a localStorage cache, so nothing ever reached the database
-# and a page refresh (which re-fetches from GET /profile) wiped out
-# whatever the customer had just typed. This is the real persistence.
 @auth_bp.route("/profile", methods=["PATCH"])
 @login_required
 def update_profile():
@@ -224,6 +219,7 @@ def update_profile():
         cleaned["building_name"] = (data.get("buildingName") or "").strip() or None
     if "landmark" in data:
         cleaned["landmark"] = (data.get("landmark") or "").strip() or None
+
     if "pinCode" in data:
         pin_code = (data.get("pinCode") or "").strip()
         if pin_code and not is_valid_pin(pin_code):

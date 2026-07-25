@@ -156,18 +156,17 @@
     const phone = document.getElementById("fieldPhone")?.value?.trim();
 
     if (!name) { toast("Name cannot be empty.", "error"); return; }
+    if (name.length < 3) { toast("Name must be at least 3 characters.", "error"); return; }
+    if (phone && !/^\d{10}$/.test(phone.replace(/\D/g, ""))) {
+      toast("Enter a valid 10-digit mobile number.", "error");
+      return;
+    }
 
     try {
-      // Persist to the database (PATCH /api/auth/profile) — previously this
-      // only wrote to a localStorage cache, so it looked saved until the
-      // next page load / GET /profile call wiped it out.
-      await AuthAPI.updateProfile({ fullName: name, phone });
-
-      const stored = Auth.getUser();
-      const updated = { ...stored, name, phone };
-      localStorage.setItem("d2d_user", JSON.stringify(updated));
-      window.Header?.setLoggedIn(updated);
-      text("profileName", name);
+      const res = await AuthAPI.updateProfile({ fullName: name, phone });
+      const user = res?.data || {};
+      window.Header?.setLoggedIn({ name: user.full_name || name });
+      text("profileName", user.full_name || name);
       text("profileEmail", document.getElementById("fieldEmail")?.value);
       toggleEdit(false);
       toast("Profile saved successfully! ✅", "success");
@@ -215,28 +214,28 @@
     }
 
     try {
-      // Persist to the database — this used to only update the on-screen
-      // text, so it looked saved but reverted the moment the page reloaded
-      // and re-fetched the (unchanged) profile from the server.
-      await AuthAPI.updateProfile({
+      const res = await AuthAPI.updateProfile({
         streetAddress: street,
         apartment: apt,
         buildingName: building,
-        landmark,
+        landmark: landmark,
         pinCode: pin,
       });
+      const user = res?.data || {};
 
-      /* Update display */
-      text("dispStreet",   street   || "—");
-      text("dispApt",      apt      ? `Flat / Apt: ${apt}` : "—");
-      text("dispBuilding", building || "—");
-      text("dispLandmark", landmark ? `Near: ${landmark}` : "—");
-      text("dispPin",      pin      || "—");
+      /* Update display from the server's saved values, not just the
+         raw form inputs — this is what actually persists across a
+         refresh now (previously this only touched the DOM). */
+      text("dispStreet",   user.street_address || "—");
+      text("dispApt",      user.apartment ? `Flat / Apt: ${user.apartment}` : "—");
+      text("dispBuilding", user.building_name || "—");
+      text("dispLandmark", user.landmark ? `Near: ${user.landmark}` : "—");
+      text("dispPin",      user.pin_code || "—");
 
       toggleAddressEdit(false);
       toast("Address updated! 📍", "success");
     } catch (err) {
-      toast(err.message || "Failed to save address. Try again.", "error");
+      toast(err.message || "Failed to update address. Try again.", "error");
     }
   };
 

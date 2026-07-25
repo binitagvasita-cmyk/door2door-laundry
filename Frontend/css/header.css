@@ -471,6 +471,45 @@
     }
 }
 
+/* ── Social icons (WhatsApp / Instagram) — desktop header ── */
+.header-social {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    color: var(--text-dark);
+    background: var(--white, #fff);
+    transition: transform 0.22s var(--spring), border-color 0.22s, color 0.22s, background 0.22s;
+}
+
+.header-social-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--brand);
+    color: var(--brand);
+    background: var(--brand-light);
+}
+
+.header-social-btn--whatsapp:hover {
+    border-color: #25d366;
+    color: #25d366;
+    background: rgba(37, 211, 102, 0.1);
+}
+
+.header-social-btn--instagram:hover {
+    border-color: #e1306c;
+    color: #e1306c;
+    background: rgba(225, 48, 108, 0.08);
+}
+
 /* ── Call Now — DARK TEAL, WHITE TEXT ── */
 .btn-call {
     display: flex;
@@ -629,42 +668,6 @@
     width: 100%;
     justify-content: center;
     text-align: center;
-}
-
-/* ── Header social icons (WhatsApp / Instagram) ── */
-.header-social {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-right: 2px;
-}
-
-.header-social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    color: var(--brand);
-    background: var(--white);
-    flex-shrink: 0;
-    transition: background 0.25s, color 0.25s, transform 0.25s var(--spring), border-color 0.25s;
-}
-
-.header-social-btn:hover {
-    background: var(--brand);
-    color: var(--white);
-    border-color: var(--brand);
-    transform: translateY(-2px);
-}
-
-.mobile-social {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 6px;
 }
 
 /* ── User Avatar ── */
@@ -892,6 +895,14 @@
     padding-top: 16px;
     border-top: 1px solid var(--border);
     animation: mobileSlide 0.35s 0.4s var(--spring) both;
+}
+
+.mobile-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding-bottom: 4px;
 }
 
 /* ══════════════════════════════
