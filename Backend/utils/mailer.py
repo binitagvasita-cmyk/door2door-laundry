@@ -3,17 +3,39 @@
 #  Sends:
 #    • OTP verification emails
 #    • Order confirmation emails
-#  Via Gmail SMTP (App Password).
+#    • Admin new-order notifications
+#    • Order status update emails
+#
+#  IMPORTANT — why this uses Brevo's HTTPS API instead of Gmail SMTP:
+#  As of Sept 26, 2025, Render's free-tier web services block ALL
+#  outbound traffic to SMTP ports 25, 465, and 587 at the network
+#  level (see https://render.com/changelog/free-web-services-will-
+#  no-longer-allow-outbound-traffic-to-smtp-ports). This is a
+#  permanent firewall rule on Render's side — no amount of retrying,
+#  timeouts, or IPv4/IPv6 forcing can get around it, since the
+#  connection is dropped before it leaves Render's network.
+#
+#  The fix is to stop using SMTP entirely and send email over HTTPS
+#  (port 443, which is NOT blocked) via Brevo's transactional email
+#  API. Brevo's free tier gives 300 emails/day at no cost.
+#
+#  Setup required (one-time):
+#    1. Create a free account at https://www.brevo.com
+#    2. Go to Settings → SMTP & API → API Keys → generate a new key
+#    3. Add BREVO_API_KEY=<your key> to Render's Environment tab
+#       (and to your local .env for local dev)
+#    4. In Brevo, go to Senders & IP → Senders, and add/verify the
+#       address you want to send FROM (this can be your existing
+#       Gmail address — Brevo just needs to confirm you own it via
+#       a verification email, it does not need your Gmail password)
+#    5. GMAIL_USER and GMAIL_APP_PASSWORD env vars are no longer
+#       used by this file and can eventually be removed, but leaving
+#       them set does no harm.
 # ============================================================
 
-import smtplib
-import socket
-import ssl
 import random
 import string
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.utils import formataddr
+import requests
 import config
 
 
@@ -21,66 +43,39 @@ import config
 #  HELPERS
 # ════════════════════════════════════════════════════════════
 
+BREVO_API_URL = "https://api.brevo.com/v3/smtp/email"
+
+
 def generate_otp(length: int = 6) -> str:
     """Generate a secure 6-digit numeric OTP."""
     return "".join(random.choices(string.digits, k=length))
 
 
-def _create_ipv4_ssl_socket(host, port, timeout):
+def _send(to_email: str, subject: str, html_content: str, text_content: str) -> bool:
     """
-    Open a TLS/SSL socket to (host, port), forcing IPv4.
-
-    Render's free tier does not properly route outbound IPv6 traffic.
-    smtp.gmail.com resolves to both an IPv4 and an IPv6 address, and the
-    default socket resolution can pick the IPv6 one — which then fails
-    with "[Errno 101] Network is unreachable" before authentication is
-    even attempted. Resolving explicitly with socket.AF_INET forces the
-    IPv4 address, which Render can actually route.
+    Internal email sender — posts to Brevo's transactional email API
+    over HTTPS. Returns True on success.
     """
-    addr_info = socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_STREAM)
-    raw_sock = socket.socket(addr_info[0][0], addr_info[0][1], addr_info[0][2])
-    raw_sock.settimeout(timeout)
-    raw_sock.connect(addr_info[0][4])
-    context = ssl.create_default_context()
-    # server_hostname keeps TLS certificate verification checking against
-    # "smtp.gmail.com" even though we connected via its raw IPv4 address.
-    return context.wrap_socket(raw_sock, server_hostname=host)
-
-
-def _send(msg: MIMEMultipart) -> bool:
-    """Internal SMTP sender. Returns True on success."""
+    payload = {
+        "sender": {"name": "Door2Door Laundry", "email": config.GMAIL_USER},
+        "to": [{"email": to_email}],
+        "subject": subject,
+        "htmlContent": html_content,
+        "textContent": text_content,
+    }
+    headers = {
+        "api-key": config.BREVO_API_KEY,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
     try:
-        # NOTE: timeout=10 — without this, a slow/unreachable SMTP
-        # connection can hang indefinitely, which causes Gunicorn to
-        # force-kill the whole worker mid-request. With a timeout set,
-        # a slow connection instead raises a normal exception that the
-        # caller can catch.
-        #
-        # NOTE: IPv4 is forced via _create_ipv4_ssl_socket — Render's
-        # free tier fails outbound IPv6 with "Errno 101 Network is
-        # unreachable", which smtp.gmail.com's default DNS resolution
-        # can trigger. We open the socket ourselves and hand it to
-        # smtplib.SMTP_SSL instead of letting it connect on its own.
-        # No host passed here on purpose — smtplib auto-connects in
-        # __init__ as soon as a host is given, which would attempt (and
-        # fail on) the default IPv6-first resolution before we get a
-        # chance to swap in our own IPv4 socket below.
-        server = smtplib.SMTP_SSL(timeout=10)
-        server._host = "smtp.gmail.com"
-        server.sock = _create_ipv4_ssl_socket("smtp.gmail.com", 465, 10)
-        server.file = server.sock.makefile("rb")
-        code, _ = server.getreply()
-        if code != 220:
-            raise smtplib.SMTPConnectError(code, "Could not connect to smtp.gmail.com")
-        server.ehlo()
-        try:
-            server.login(config.GMAIL_USER, config.GMAIL_APP_PASSWORD)
-            server.send_message(msg)
-        finally:
-            server.close()
-        return True
+        resp = requests.post(BREVO_API_URL, json=payload, headers=headers, timeout=10)
+        if resp.status_code in (200, 201):
+            return True
+        print(f"[Email] Brevo API error: {resp.status_code} {resp.text}")
+        return False
     except Exception as e:
-        print(f"[Email] SMTP error: {e}")
+        print(f"[Email] Brevo request failed: {e}")
         return False
 
 
@@ -144,14 +139,12 @@ def send_otp_email(to_email: str, otp: str, user_name: str = "") -> bool:
         "This code expires in 10 minutes. Do not share it.\n\n-- Door2Door Laundry Team"
     )
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = "Your Door2Door Laundry Verification Code"
-    msg["From"]    = formataddr(("Door2Door Laundry", config.GMAIL_USER))
-    msg["To"]      = to_email
-    msg.attach(MIMEText(text, "plain", "utf-8"))
-    msg.attach(MIMEText(_base_html("Door2Door Laundry", "Fast · Fresh · Clean", body), "html", "utf-8"))
-
-    ok = _send(msg)
+    ok = _send(
+        to_email=to_email,
+        subject="Your Door2Door Laundry Verification Code",
+        html_content=_base_html("Door2Door Laundry", "Fast · Fresh · Clean", body),
+        text_content=text,
+    )
     if not ok:
         print(f"[Email] Failed to send OTP to {to_email}")
     return ok
@@ -258,17 +251,12 @@ def send_order_confirmation_email(
         "Thank you for choosing Door2Door Laundry!\n\n-- Door2Door Laundry Team"
     )
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"✅ Order #{order_id} Confirmed — Door2Door Laundry"
-    msg["From"]    = formataddr(("Door2Door Laundry", config.GMAIL_USER))
-    msg["To"]      = to_email
-    msg.attach(MIMEText(text, "plain", "utf-8"))
-    msg.attach(MIMEText(
-        _base_html("Order Confirmed! 🎉", f"Order #{order_id} · {pickup_str}", body),
-        "html", "utf-8"
-    ))
-
-    ok = _send(msg)
+    ok = _send(
+        to_email=to_email,
+        subject=f"✅ Order #{order_id} Confirmed — Door2Door Laundry",
+        html_content=_base_html("Order Confirmed! 🎉", f"Order #{order_id} · {pickup_str}", body),
+        text_content=text,
+    )
     if not ok:
         print(f"[Email] Failed to send order confirmation to {to_email}")
     return ok
@@ -361,17 +349,12 @@ def send_admin_order_notification_email(
         f"Total: {total_str}\n"
     )
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"🔔 New Order #{order_id} — {customer_name}"
-    msg["From"]    = formataddr(("Door2Door Laundry", config.GMAIL_USER))
-    msg["To"]      = config.ADMIN_NOTIFICATION_EMAIL
-    msg.attach(MIMEText(text, "plain", "utf-8"))
-    msg.attach(MIMEText(
-        _base_html("New Order! 🔔", f"Order #{order_id} · {customer_name}", body),
-        "html", "utf-8"
-    ))
-
-    ok = _send(msg)
+    ok = _send(
+        to_email=config.ADMIN_NOTIFICATION_EMAIL,
+        subject=f"🔔 New Order #{order_id} — {customer_name}",
+        html_content=_base_html("New Order! 🔔", f"Order #{order_id} · {customer_name}", body),
+        text_content=text,
+    )
     if not ok:
         print(f"[Email] Failed to send admin notification for order {order_id}")
     return ok
@@ -458,17 +441,12 @@ def send_order_status_update_email(
         f"Address: {delivery_address}\n\n-- Door2Door Laundry Team"
     )
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"{copy['emoji']} Order #{order_id} — {copy['title']}"
-    msg["From"]    = formataddr(("Door2Door Laundry", config.GMAIL_USER))
-    msg["To"]      = to_email
-    msg.attach(MIMEText(text, "plain", "utf-8"))
-    msg.attach(MIMEText(
-        _base_html(f"{copy['emoji']} {copy['title']}", f"Order #{order_id}", body),
-        "html", "utf-8"
-    ))
-
-    ok = _send(msg)
+    ok = _send(
+        to_email=to_email,
+        subject=f"{copy['emoji']} Order #{order_id} — {copy['title']}",
+        html_content=_base_html(f"{copy['emoji']} {copy['title']}", f"Order #{order_id}", body),
+        text_content=text,
+    )
     if not ok:
         print(f"[Email] Failed to send status update ({new_status}) for order {order_id}")
     return ok

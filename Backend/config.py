@@ -36,6 +36,12 @@ GMAIL_USER         = os.environ.get("GMAIL_USER", "")
 GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD", "")
 OTP_EXPIRY_MINUTES = int(os.environ.get("OTP_EXPIRY_MINUTES", 10))
 
+# Brevo transactional email API key — required by utils/mailer.py.
+# Render's free tier blocks outbound SMTP (ports 25/465/587), so email
+# is sent over HTTPS via Brevo's API instead of Gmail SMTP directly.
+# Get a free key at https://app.brevo.com → Settings → SMTP & API → API Keys.
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY", "")
+
 # Recipient for the "new order placed" admin notification email.
 # Falls back to GMAIL_USER (the sending account) if not set.
 ADMIN_NOTIFICATION_EMAIL = os.environ.get("ADMIN_NOTIFICATION_EMAIL", "") or GMAIL_USER
