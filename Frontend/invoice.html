@@ -3,34 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Invoice — Door2Door Laundry</title>
-    <meta name="description" content="Order invoice / bill for your Door2Door Laundry order." />
+    <title>Invoice — Quick Laundry Laundry</title>
+    <meta name="robots" content="index, follow" />
+
+    <meta name="author" content="Quick Laundry" />
+
+    <meta name="theme-color" content="#42BABC" />
+
+    <link rel="canonical" href="https://www.quicklaundry.shop/invoice.html" />
+    <meta
+      name="description"
+      content="Order invoice / bill for your Door2Door Laundry order."
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./css/invoice.css" />
   </head>
   <body>
-
     <!-- Toolbar (hidden when printing) -->
     <div class="inv-toolbar no-print">
       <a href="track-order.html" class="inv-back">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
         Back
       </a>
       <button class="inv-print-btn" id="printBtn" onclick="window.print()">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        >
+          <polyline points="6 9 6 2 18 2 18 9" />
+          <path
+            d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"
+          />
+          <rect x="6" y="14" width="12" height="8" />
+        </svg>
         Download / Print Bill
       </button>
     </div>
 
     <!-- Loading / error states -->
     <div class="inv-state no-print" id="invLoading">Loading your bill…</div>
-    <div class="inv-state inv-state--error no-print" id="invError" style="display:none"></div>
+    <div
+      class="inv-state inv-state--error no-print"
+      id="invError"
+      style="display: none"
+    ></div>
 
     <!-- Invoice sheet -->
-    <main class="inv-sheet" id="invSheet" style="display:none">
-
+    <main class="inv-sheet" id="invSheet" style="display: none">
       <div class="inv-head">
         <div class="inv-brand">
           <div class="inv-brand-icon">🧺</div>
@@ -78,7 +117,9 @@
           </tr>
         </thead>
         <tbody id="iItemsBody">
-          <tr><td colspan="4">—</td></tr>
+          <tr>
+            <td colspan="4">—</td>
+          </tr>
         </tbody>
         <tfoot>
           <tr>
@@ -99,14 +140,24 @@
         </div>
       </div>
 
-      <div class="inv-note-row no-print-empty" id="iNoteRow" style="display:none">
+      <div
+        class="inv-note-row no-print-empty"
+        id="iNoteRow"
+        style="display: none"
+      >
         <span class="inv-label">Special Instructions</span>
         <p id="iNote">—</p>
       </div>
 
       <div class="inv-footer">
-        <p>Thank you for choosing Door2Door Laundry! This is a system-generated bill.</p>
-        <p>Questions about this bill? Call +91 84601 40501 or WhatsApp us anytime.</p>
+        <p>
+          Thank you for choosing Door2Door Laundry! This is a system-generated
+          bill.
+        </p>
+        <p>
+          Questions about this bill? Call +91 84601 40501 or WhatsApp us
+          anytime.
+        </p>
       </div>
     </main>
 

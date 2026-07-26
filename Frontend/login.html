@@ -3,8 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login — Door2Door Laundry</title>
+    <title>Login — Quick Laundry Laundry</title>
+    <meta name="robots" content="index, follow" />
 
+    <meta name="author" content="Quick Laundry" />
+
+    <meta name="theme-color" content="#42BABC" />
+
+    <link rel="canonical" href="https://www.quicklaundry.shop/login.html" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,7 +26,6 @@
     <link rel="stylesheet" href="css/login.css" />
   </head>
   <body>
-
     <!-- ════════════════════════════════════════
          HEADER COMPONENT
     ════════════════════════════════════════ -->
@@ -30,12 +35,10 @@
          LOGIN SECTION
     ════════════════════════════════════════ -->
     <main class="login-main">
-
       <!-- ── LEFT DECORATIVE PANEL ── -->
       <aside class="login-panel" aria-hidden="true">
         <div class="login-panel__bg"></div>
         <div class="login-panel__content">
-
           <span class="login-panel__icon">🧺</span>
 
           <h2 class="login-panel__headline">
@@ -43,8 +46,8 @@
           </h2>
 
           <p class="login-panel__sub">
-            Sign in to manage your pickups, track orders,
-            and get your laundry done — door to door.
+            Sign in to manage your pickups, track orders, and get your laundry
+            done — door to door.
           </p>
 
           <div class="panel-divider"></div>
@@ -78,7 +81,6 @@
       <!-- ── RIGHT FORM PANEL ── -->
       <section class="login-form-wrap">
         <div class="login-card">
-
           <!-- Card header -->
           <div class="login-card__header">
             <span class="login-badge">Member Login</span>
@@ -90,7 +92,6 @@
 
           <!-- ── LOGIN FORM ── -->
           <div id="loginForm">
-
             <!-- Email -->
             <div class="form-group">
               <label class="form-label" for="email">Email Address</label>
@@ -147,11 +148,7 @@
             <!-- Remember me + Forgot -->
             <div class="login-meta">
               <label class="checkbox-label" for="rememberMe">
-                <input
-                  type="checkbox"
-                  id="rememberMe"
-                  class="checkbox-input"
-                />
+                <input type="checkbox" id="rememberMe" class="checkbox-input" />
                 <span class="checkbox-custom"></span>
                 <span>Remember me</span>
               </label>
@@ -190,16 +187,22 @@
               Don't have an account?
               <a href="register.html">Create one free</a>
             </p>
-
           </div>
           <!-- /loginForm -->
 
           <!-- ── SUCCESS STATE ── -->
           <div class="login-success" id="loginSuccess">
-            <svg class="success-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              class="success-icon"
+              viewBox="0 0 52 52"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <circle
                 class="success-circle"
-                cx="26" cy="26" r="25"
+                cx="26"
+                cy="26"
+                r="25"
                 fill="none"
                 stroke="#42BABC"
                 stroke-width="2"
@@ -217,15 +220,11 @@
             <p class="success-sub" id="successSubMsg">
               You're signed in. Redirecting you now…
             </p>
-            <a href="index.html" class="btn-success-cta">
-              Go to Home →
-            </a>
+            <a href="index.html" class="btn-success-cta"> Go to Home → </a>
           </div>
-
         </div>
         <!-- /login-card -->
       </section>
-
     </main>
     <!-- /login-main -->
 
@@ -238,6 +237,5 @@
     <script src="js/auth.js"></script>
     <script src="js/api.js"></script>
     <script src="js/login.js"></script>
-
   </body>
 </html>

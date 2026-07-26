@@ -1,423 +1,909 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Profile — Door2Door Laundry</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./css/header.css" />
-  <link rel="stylesheet" href="./css/footer.css" />
-  <link rel="stylesheet" href="./css/profile.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile — Quick Laundry Laundry</title>
+    <meta name="robots" content="index, follow" />
 
-  <!-- Header injected here -->
-  <div id="header-placeholder"></div>
+    <meta name="author" content="Quick Laundry" />
 
-  <main class="profile-main">
+    <meta name="theme-color" content="#42BABC" />
 
-    <!-- ══ HERO BANNER ══ -->
-    <div class="profile-banner">
-      <div class="banner-wave"></div>
-      <div class="banner-bubbles">
-        <span class="bb bb1"></span><span class="bb bb2"></span>
-        <span class="bb bb3"></span><span class="bb bb4"></span>
-        <span class="bb bb5"></span>
+    <link rel="canonical" href="https://www.quicklaundry.shop/profile.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/header.css" />
+    <link rel="stylesheet" href="./css/footer.css" />
+    <link rel="stylesheet" href="./css/profile.css" />
+  </head>
+  <body>
+    <!-- Header injected here -->
+    <div id="header-placeholder"></div>
+
+    <main class="profile-main">
+      <!-- ══ HERO BANNER ══ -->
+      <div class="profile-banner">
+        <div class="banner-wave"></div>
+        <div class="banner-bubbles">
+          <span class="bb bb1"></span><span class="bb bb2"></span>
+          <span class="bb bb3"></span><span class="bb bb4"></span>
+          <span class="bb bb5"></span>
+        </div>
       </div>
-    </div>
 
-    <div class="profile-container">
-
-      <!-- ══ AVATAR CARD ══ -->
-      <div class="avatar-card" data-reveal>
-        <div class="avatar-wrap">
-          <div class="avatar-ring"></div>
-          <img id="profileAvatar" class="avatar-img" src="" alt="Profile photo" onerror="this.style.display='none';document.getElementById('avatarInitials').style.display='flex'" />
-          <div class="avatar-initials" id="avatarInitials">
-            <span id="initialsText">U</span>
+      <div class="profile-container">
+        <!-- ══ AVATAR CARD ══ -->
+        <div class="avatar-card" data-reveal>
+          <div class="avatar-wrap">
+            <div class="avatar-ring"></div>
+            <img
+              id="profileAvatar"
+              class="avatar-img"
+              src=""
+              alt="Profile photo"
+              onerror="this.style.display='none';document.getElementById('avatarInitials').style.display='flex'"
+            />
+            <div class="avatar-initials" id="avatarInitials">
+              <span id="initialsText">U</span>
+            </div>
+            <!-- Upload overlay -->
+            <label
+              class="avatar-upload-btn"
+              for="avatarInput"
+              title="Change photo"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+            </label>
+            <input type="file" id="avatarInput" accept="image/*" hidden />
+            <div class="avatar-badge">
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 0 0 1.946-.806 3.42 3.42 0 0 1 4.438 0 3.42 3.42 0 0 0 1.946.806 3.42 3.42 0 0 1 3.138 3.138 3.42 3.42 0 0 0 .806 1.946 3.42 3.42 0 0 1 0 4.438 3.42 3.42 0 0 0-.806 1.946 3.42 3.42 0 0 1-3.138 3.138 3.42 3.42 0 0 0-1.946.806 3.42 3.42 0 0 1-4.438 0 3.42 3.42 0 0 0-1.946-.806 3.42 3.42 0 0 1-3.138-3.138 3.42 3.42 0 0 0-.806-1.946 3.42 3.42 0 0 1 0-4.438 3.42 3.42 0 0 0 .806-1.946 3.42 3.42 0 0 1 3.138-3.138z"
+                />
+              </svg>
+            </div>
           </div>
-          <!-- Upload overlay -->
-          <label class="avatar-upload-btn" for="avatarInput" title="Change photo">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="17 8 12 3 7 8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
+
+          <div class="avatar-info">
+            <h1 class="profile-name" id="profileName">Loading…</h1>
+            <p class="profile-email" id="profileEmail">—</p>
+            <div class="profile-chips">
+              <span class="chip chip-verified" id="verifiedChip">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Verified
+              </span>
+              <span class="chip chip-member">Member</span>
+            </div>
+          </div>
+
+          <!-- Stats row -->
+          <div class="stats-row">
+            <div class="stat-box">
+              <span class="stat-val" id="statOrders">0</span>
+              <span class="stat-lbl">Orders</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-box">
+              <span class="stat-val" id="statActive">0</span>
+              <span class="stat-lbl">Active</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-box">
+              <span class="stat-val" id="statSaved">₹0</span>
+              <span class="stat-lbl">Spent</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ TABS ══ -->
+        <div class="tabs-wrapper" data-reveal data-delay="80">
+          <nav class="tabs" role="tablist">
+            <button class="tab active" role="tab" data-tab="details">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+              </svg>
+              Profile
+            </button>
+            <button class="tab" role="tab" data-tab="address">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Address
+            </button>
+            <button class="tab" role="tab" data-tab="orders">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M9 11l3 3L22 4" />
+                <path
+                  d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+                />
+              </svg>
+              Orders
+            </button>
+            <button class="tab" role="tab" data-tab="security">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              Security
+            </button>
+          </nav>
+          <div class="tab-indicator"></div>
+        </div>
+
+        <!-- ══ TAB PANELS ══ -->
+
+        <!-- ── DETAILS ── -->
+        <div
+          class="tab-panel active"
+          id="tab-details"
+          data-reveal
+          data-delay="120"
+        >
+          <div class="panel-header">
+            <h2>Personal Information</h2>
+            <button class="btn-edit" id="editToggle" onclick="toggleEdit()">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+              >
+                <path
+                  d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                />
+                <path
+                  d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                />
+              </svg>
+              Edit
+            </button>
+          </div>
+
+          <form
+            class="profile-form"
+            id="profileForm"
+            onsubmit="saveProfile(event)"
+          >
+            <div class="form-grid">
+              <div class="field-group">
+                <label>Full Name</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                  </svg>
+                  <input
+                    type="text"
+                    id="fieldName"
+                    name="full_name"
+                    placeholder="Your full name"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label>Email Address</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                    />
+                    <polyline points="22,6 12,13 2,6" />
+                  </svg>
+                  <input
+                    type="email"
+                    id="fieldEmail"
+                    name="email"
+                    placeholder="your@email.com"
+                    disabled
+                  />
+                  <span class="input-badge">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label>Phone Number</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 12 19.79 19.79 0 0 1 1 3.18 2 2 0 0 1 3 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+                    />
+                  </svg>
+                  <input
+                    type="tel"
+                    id="fieldPhone"
+                    name="phone"
+                    placeholder="+91 98765 43210"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label>Member Since</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  <input type="text" id="fieldJoined" disabled />
+                </div>
+              </div>
+            </div>
+
+            <!-- Save / Cancel — shown only in edit mode -->
+            <div class="form-actions" id="formActions" style="display: none">
+              <button
+                type="button"
+                class="btn-cancel"
+                onclick="toggleEdit(false)"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn-save">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Save Changes
+              </button>
+            </div>
+          </form>
+
+          <!-- Notifications -->
+          <div class="pref-section">
+            <h3 class="pref-title">Preferences</h3>
+            <div class="pref-list">
+              <label class="pref-row">
+                <div class="pref-info">
+                  <span class="pref-name">Order Notifications</span>
+                  <span class="pref-desc"
+                    >Get updates on your laundry status</span
+                  >
+                </div>
+                <div class="toggle" id="toggleNotif">
+                  <input type="checkbox" checked />
+                  <span class="toggle-track"
+                    ><span class="toggle-thumb"></span
+                  ></span>
+                </div>
+              </label>
+              <label class="pref-row">
+                <div class="pref-info">
+                  <span class="pref-name">Marketing Emails</span>
+                  <span class="pref-desc">Offers, discounts & news</span>
+                </div>
+                <div class="toggle" id="toggleMktg">
+                  <input type="checkbox" />
+                  <span class="toggle-track"
+                    ><span class="toggle-thumb"></span
+                  ></span>
+                </div>
+              </label>
+              <label class="pref-row">
+                <div class="pref-info">
+                  <span class="pref-name">SMS Alerts</span>
+                  <span class="pref-desc"
+                    >Pickup & delivery reminders via SMS</span
+                  >
+                </div>
+                <div class="toggle" id="toggleSms">
+                  <input type="checkbox" checked />
+                  <span class="toggle-track"
+                    ><span class="toggle-thumb"></span
+                  ></span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ADDRESS ── -->
+        <div class="tab-panel" id="tab-address">
+          <div class="panel-header">
+            <h2>Saved Address</h2>
+            <button
+              class="btn-edit"
+              id="editAddressToggle"
+              onclick="toggleAddressEdit()"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+              >
+                <path
+                  d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                />
+                <path
+                  d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                />
+              </svg>
+              Edit
+            </button>
+          </div>
+
+          <!-- Address display card -->
+          <div class="address-display" id="addressDisplay">
+            <div class="address-pin-icon">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            <div class="address-lines">
+              <div class="address-line" id="dispStreet">—</div>
+              <div class="address-line small" id="dispApt">—</div>
+              <div class="address-line small" id="dispBuilding">—</div>
+              <div class="address-line small" id="dispLandmark">—</div>
+              <div class="address-pin-row">
+                <span class="pin-badge" id="dispPin">—</span>
+                <span class="pin-label">PIN Code</span>
+              </div>
+            </div>
+          </div>
+
+          <form
+            class="profile-form"
+            id="addressForm"
+            onsubmit="saveAddress(event)"
+          >
+            <div class="form-grid">
+              <div class="field-group full">
+                <label>Street Address</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
+                  <input
+                    type="text"
+                    id="addrStreet"
+                    name="street_address"
+                    placeholder="Street / Area"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label>Apartment / Flat</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <path d="M9 3v18" />
+                    <path d="M3 9h6M3 15h6M15 9h6M15 15h6" />
+                  </svg>
+                  <input
+                    type="text"
+                    id="addrApt"
+                    name="apartment"
+                    placeholder="Flat / Door no."
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label>Building / Society Name</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                  <input
+                    type="text"
+                    id="addrBuilding"
+                    name="building_name"
+                    placeholder="Society / Building name"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label>Landmark</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  <input
+                    type="text"
+                    id="addrLandmark"
+                    name="landmark"
+                    placeholder="Near school / temple…"
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label>PIN Code</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                  </svg>
+                  <input
+                    type="text"
+                    id="addrPin"
+                    name="pin_code"
+                    placeholder="380052"
+                    maxlength="6"
+                    disabled
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="form-actions"
+              id="addressFormActions"
+              style="display: none"
+            >
+              <button
+                type="button"
+                class="btn-cancel"
+                onclick="toggleAddressEdit(false)"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn-save">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Save Address
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ── ORDERS ── -->
+        <div class="tab-panel" id="tab-orders">
+          <div class="panel-header">
+            <h2>My Orders</h2>
+            <a href="services.html" class="btn-book-new">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              New Order
+            </a>
+          </div>
+
+          <div id="ordersLoader" class="loader-wrap">
+            <div class="spin-ring"></div>
+            <p>Loading your orders…</p>
+          </div>
+
+          <div id="ordersEmpty" class="empty-state" style="display: none">
+            <div class="empty-icon">🧺</div>
+            <h3>No orders yet</h3>
+            <p>
+              Book your first laundry pickup and we'll take care of the rest!
+            </p>
+            <a
+              href="services.html"
+              class="btn-save"
+              style="display: inline-flex; gap: 6px; margin-top: 8px"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Book Now
+            </a>
+          </div>
+
+          <div id="ordersList" class="orders-list" style="display: none"></div>
+        </div>
+
+        <!-- ── SECURITY ── -->
+        <div class="tab-panel" id="tab-security">
+          <div class="panel-header">
+            <h2>Security</h2>
+          </div>
+
+          <div class="security-cards">
+            <div class="sec-card">
+              <div class="sec-icon sec-green">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <div class="sec-body">
+                <h4>Email Verified</h4>
+                <p>Your email address is verified and secure.</p>
+              </div>
+              <span class="sec-status ok">Active</span>
+            </div>
+
+            <div class="sec-card">
+              <div class="sec-icon sec-teal">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </div>
+              <div class="sec-body">
+                <h4>Change Password</h4>
+                <p>Update your password to keep your account safe.</p>
+              </div>
+              <button class="sec-action" onclick="showChangePassword()">
+                Change
+              </button>
+            </div>
+
+            <div class="sec-card">
+              <div class="sec-icon sec-orange">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 12 19.79 19.79 0 0 1 1 3.18 2 2 0 0 1 3 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+                  />
+                </svg>
+              </div>
+              <div class="sec-body">
+                <h4>Phone Number</h4>
+                <p id="secPhone">—</p>
+              </div>
+              <span class="sec-status ok">Linked</span>
+            </div>
+
+            <div class="sec-card danger-card">
+              <div class="sec-icon sec-red">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="3 6 5 6 21 6" />
+                  <path
+                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"
+                  />
+                </svg>
+              </div>
+              <div class="sec-body">
+                <h4>Delete Account</h4>
+                <p>Permanently remove your account and all data.</p>
+              </div>
+              <button class="sec-action danger" onclick="confirmDelete()">
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <!-- Change password form (hidden by default) -->
+          <div class="change-pw-form" id="changePwForm" style="display: none">
+            <h3>Change Password</h3>
+            <div class="form-grid">
+              <div class="field-group full">
+                <label>Current Password</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  <input
+                    type="password"
+                    id="pwCurrent"
+                    placeholder="Current password"
+                  />
+                </div>
+              </div>
+              <div class="field-group">
+                <label>New Password</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  <input
+                    type="password"
+                    id="pwNew"
+                    placeholder="New password"
+                  />
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Confirm New Password</label>
+                <div class="input-wrap">
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  <input
+                    type="password"
+                    id="pwConfirm"
+                    placeholder="Confirm password"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button
+                type="button"
+                class="btn-cancel"
+                onclick="document.getElementById('changePwForm').style.display='none'"
+              >
+                Cancel
+              </button>
+              <button type="button" class="btn-save" onclick="changePassword()">
+                Update Password
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ LOGOUT BUTTON ══ -->
+        <div class="logout-section" data-reveal data-delay="200">
+          <button class="btn-logout" onclick="doLogout()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
             </svg>
-          </label>
-          <input type="file" id="avatarInput" accept="image/*" hidden />
-          <div class="avatar-badge">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 0 0 1.946-.806 3.42 3.42 0 0 1 4.438 0 3.42 3.42 0 0 0 1.946.806 3.42 3.42 0 0 1 3.138 3.138 3.42 3.42 0 0 0 .806 1.946 3.42 3.42 0 0 1 0 4.438 3.42 3.42 0 0 0-.806 1.946 3.42 3.42 0 0 1-3.138 3.138 3.42 3.42 0 0 0-1.946.806 3.42 3.42 0 0 1-4.438 0 3.42 3.42 0 0 0-1.946-.806 3.42 3.42 0 0 1-3.138-3.138 3.42 3.42 0 0 0-.806-1.946 3.42 3.42 0 0 1 0-4.438 3.42 3.42 0 0 0 .806-1.946 3.42 3.42 0 0 1 3.138-3.138z"/></svg>
-          </div>
-        </div>
-
-        <div class="avatar-info">
-          <h1 class="profile-name" id="profileName">Loading…</h1>
-          <p class="profile-email" id="profileEmail">—</p>
-          <div class="profile-chips">
-            <span class="chip chip-verified" id="verifiedChip">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              Verified
-            </span>
-            <span class="chip chip-member">Member</span>
-          </div>
-        </div>
-
-        <!-- Stats row -->
-        <div class="stats-row">
-          <div class="stat-box">
-            <span class="stat-val" id="statOrders">0</span>
-            <span class="stat-lbl">Orders</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-box">
-            <span class="stat-val" id="statActive">0</span>
-            <span class="stat-lbl">Active</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-box">
-            <span class="stat-val" id="statSaved">₹0</span>
-            <span class="stat-lbl">Spent</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ TABS ══ -->
-      <div class="tabs-wrapper" data-reveal data-delay="80">
-        <nav class="tabs" role="tablist">
-          <button class="tab active" role="tab" data-tab="details">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            Profile
-          </button>
-          <button class="tab" role="tab" data-tab="address">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Address
-          </button>
-          <button class="tab" role="tab" data-tab="orders">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            Orders
-          </button>
-          <button class="tab" role="tab" data-tab="security">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            Security
-          </button>
-        </nav>
-        <div class="tab-indicator"></div>
-      </div>
-
-      <!-- ══ TAB PANELS ══ -->
-
-      <!-- ── DETAILS ── -->
-      <div class="tab-panel active" id="tab-details" data-reveal data-delay="120">
-        <div class="panel-header">
-          <h2>Personal Information</h2>
-          <button class="btn-edit" id="editToggle" onclick="toggleEdit()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Edit
+            Sign Out
           </button>
         </div>
-
-        <form class="profile-form" id="profileForm" onsubmit="saveProfile(event)">
-          <div class="form-grid">
-            <div class="field-group">
-              <label>Full Name</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-                <input type="text" id="fieldName" name="full_name" placeholder="Your full name" disabled />
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>Email Address</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                <input type="email" id="fieldEmail" name="email" placeholder="your@email.com" disabled />
-                <span class="input-badge">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>Phone Number</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 12 19.79 19.79 0 0 1 1 3.18 2 2 0 0 1 3 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                <input type="tel" id="fieldPhone" name="phone" placeholder="+91 98765 43210" disabled />
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>Member Since</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <input type="text" id="fieldJoined" disabled />
-              </div>
-            </div>
-          </div>
-
-          <!-- Save / Cancel — shown only in edit mode -->
-          <div class="form-actions" id="formActions" style="display:none">
-            <button type="button" class="btn-cancel" onclick="toggleEdit(false)">Cancel</button>
-            <button type="submit" class="btn-save">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              Save Changes
-            </button>
-          </div>
-        </form>
-
-        <!-- Notifications -->
-        <div class="pref-section">
-          <h3 class="pref-title">Preferences</h3>
-          <div class="pref-list">
-            <label class="pref-row">
-              <div class="pref-info">
-                <span class="pref-name">Order Notifications</span>
-                <span class="pref-desc">Get updates on your laundry status</span>
-              </div>
-              <div class="toggle" id="toggleNotif">
-                <input type="checkbox" checked />
-                <span class="toggle-track"><span class="toggle-thumb"></span></span>
-              </div>
-            </label>
-            <label class="pref-row">
-              <div class="pref-info">
-                <span class="pref-name">Marketing Emails</span>
-                <span class="pref-desc">Offers, discounts & news</span>
-              </div>
-              <div class="toggle" id="toggleMktg">
-                <input type="checkbox" />
-                <span class="toggle-track"><span class="toggle-thumb"></span></span>
-              </div>
-            </label>
-            <label class="pref-row">
-              <div class="pref-info">
-                <span class="pref-name">SMS Alerts</span>
-                <span class="pref-desc">Pickup & delivery reminders via SMS</span>
-              </div>
-              <div class="toggle" id="toggleSms">
-                <input type="checkbox" checked />
-                <span class="toggle-track"><span class="toggle-thumb"></span></span>
-              </div>
-            </label>
-          </div>
-        </div>
       </div>
+      <!-- /profile-container -->
+    </main>
 
-      <!-- ── ADDRESS ── -->
-      <div class="tab-panel" id="tab-address">
-        <div class="panel-header">
-          <h2>Saved Address</h2>
-          <button class="btn-edit" id="editAddressToggle" onclick="toggleAddressEdit()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            Edit
-          </button>
-        </div>
+    <!-- Footer injected here -->
+    <div id="footer-placeholder"></div>
 
-        <!-- Address display card -->
-        <div class="address-display" id="addressDisplay">
-          <div class="address-pin-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </div>
-          <div class="address-lines">
-            <div class="address-line" id="dispStreet">—</div>
-            <div class="address-line small" id="dispApt">—</div>
-            <div class="address-line small" id="dispBuilding">—</div>
-            <div class="address-line small" id="dispLandmark">—</div>
-            <div class="address-pin-row">
-              <span class="pin-badge" id="dispPin">—</span>
-              <span class="pin-label">PIN Code</span>
-            </div>
-          </div>
-        </div>
+    <!-- ══ TOAST ══ -->
+    <div class="toast" id="toast"></div>
 
-        <form class="profile-form" id="addressForm" onsubmit="saveAddress(event)">
-          <div class="form-grid">
-            <div class="field-group full">
-              <label>Street Address</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                <input type="text" id="addrStreet" name="street_address" placeholder="Street / Area" disabled />
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>Apartment / Flat</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M3 9h6M3 15h6M15 9h6M15 15h6"/></svg>
-                <input type="text" id="addrApt" name="apartment" placeholder="Flat / Door no." disabled />
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>Building / Society Name</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                <input type="text" id="addrBuilding" name="building_name" placeholder="Society / Building name" disabled />
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>Landmark</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                <input type="text" id="addrLandmark" name="landmark" placeholder="Near school / temple…" disabled />
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>PIN Code</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                <input type="text" id="addrPin" name="pin_code" placeholder="380052" maxlength="6" disabled />
-              </div>
-            </div>
-          </div>
-
-          <div class="form-actions" id="addressFormActions" style="display:none">
-            <button type="button" class="btn-cancel" onclick="toggleAddressEdit(false)">Cancel</button>
-            <button type="submit" class="btn-save">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              Save Address
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <!-- ── ORDERS ── -->
-      <div class="tab-panel" id="tab-orders">
-        <div class="panel-header">
-          <h2>My Orders</h2>
-          <a href="services.html" class="btn-book-new">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-            New Order
-          </a>
-        </div>
-
-        <div id="ordersLoader" class="loader-wrap">
-          <div class="spin-ring"></div>
-          <p>Loading your orders…</p>
-        </div>
-
-        <div id="ordersEmpty" class="empty-state" style="display:none">
-          <div class="empty-icon">🧺</div>
-          <h3>No orders yet</h3>
-          <p>Book your first laundry pickup and we'll take care of the rest!</p>
-          <a href="services.html" class="btn-save" style="display:inline-flex;gap:6px;margin-top:8px">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-            Book Now
-          </a>
-        </div>
-
-        <div id="ordersList" class="orders-list" style="display:none"></div>
-      </div>
-
-      <!-- ── SECURITY ── -->
-      <div class="tab-panel" id="tab-security">
-        <div class="panel-header">
-          <h2>Security</h2>
-        </div>
-
-        <div class="security-cards">
-          <div class="sec-card">
-            <div class="sec-icon sec-green">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <div class="sec-body">
-              <h4>Email Verified</h4>
-              <p>Your email address is verified and secure.</p>
-            </div>
-            <span class="sec-status ok">Active</span>
-          </div>
-
-          <div class="sec-card">
-            <div class="sec-icon sec-teal">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            </div>
-            <div class="sec-body">
-              <h4>Change Password</h4>
-              <p>Update your password to keep your account safe.</p>
-            </div>
-            <button class="sec-action" onclick="showChangePassword()">Change</button>
-          </div>
-
-          <div class="sec-card">
-            <div class="sec-icon sec-orange">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 12 19.79 19.79 0 0 1 1 3.18 2 2 0 0 1 3 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            </div>
-            <div class="sec-body">
-              <h4>Phone Number</h4>
-              <p id="secPhone">—</p>
-            </div>
-            <span class="sec-status ok">Linked</span>
-          </div>
-
-          <div class="sec-card danger-card">
-            <div class="sec-icon sec-red">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-            </div>
-            <div class="sec-body">
-              <h4>Delete Account</h4>
-              <p>Permanently remove your account and all data.</p>
-            </div>
-            <button class="sec-action danger" onclick="confirmDelete()">Delete</button>
-          </div>
-        </div>
-
-        <!-- Change password form (hidden by default) -->
-        <div class="change-pw-form" id="changePwForm" style="display:none">
-          <h3>Change Password</h3>
-          <div class="form-grid">
-            <div class="field-group full">
-              <label>Current Password</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <input type="password" id="pwCurrent" placeholder="Current password" />
-              </div>
-            </div>
-            <div class="field-group">
-              <label>New Password</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <input type="password" id="pwNew" placeholder="New password" />
-              </div>
-            </div>
-            <div class="field-group">
-              <label>Confirm New Password</label>
-              <div class="input-wrap">
-                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <input type="password" id="pwConfirm" placeholder="Confirm password" />
-              </div>
-            </div>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn-cancel" onclick="document.getElementById('changePwForm').style.display='none'">Cancel</button>
-            <button type="button" class="btn-save" onclick="changePassword()">Update Password</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ══ LOGOUT BUTTON ══ -->
-      <div class="logout-section" data-reveal data-delay="200">
-        <button class="btn-logout" onclick="doLogout()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Sign Out
-        </button>
-      </div>
-
-    </div><!-- /profile-container -->
-  </main>
-
-  <!-- Footer injected here -->
-  <div id="footer-placeholder"></div>
-
-  <!-- ══ TOAST ══ -->
-  <div class="toast" id="toast"></div>
-
-  <!-- ══ SCRIPTS ══ -->
-  <script src="./js/auth.js"></script>
-  <script src="./js/api.js"></script>
-  <script src="./js/profile.js"></script>
-  <script src="./js/home.js"></script>
-</body>
+    <!-- ══ SCRIPTS ══ -->
+    <script src="./js/auth.js"></script>
+    <script src="./js/api.js"></script>
+    <script src="./js/profile.js"></script>
+    <script src="./js/home.js"></script>
+  </body>
 </html>

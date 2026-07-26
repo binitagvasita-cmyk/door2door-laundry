@@ -1,0 +1,9 @@
+User-agent: *
+
+Allow: /
+
+Disallow: /admin/
+Disallow: /profile.html
+Disallow: /invoice.html
+
+Sitemap: https://www.quicklaundry.shop/sitemap.xml

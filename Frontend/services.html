@@ -3,8 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Our Services — Door2Door Laundry</title>
+    <title>
+      Laundry Services | Dry Cleaning, Steam Press, Curtain Wash | Quick Laundry
+    </title>
 
+    <meta
+      name="description"
+      content="Explore our professional laundry services including wash & fold, dry cleaning, curtain wash, steam press, roll press, ethnic wear cleaning, and more."
+    />
+    <meta name="robots" content="index, follow" />
+
+    <meta name="author" content="Quick Laundry" />
+
+    <meta name="theme-color" content="#42BABC" />
+
+    <link rel="canonical" href="https://www.quicklaundry.shop/services.html" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,7 +30,6 @@
     <link rel="stylesheet" href="css/services.css" />
   </head>
   <body>
-
     <!-- HEADER -->
     <div id="header-placeholder"></div>
 
@@ -40,29 +52,37 @@
       </div>
       <div class="svc-hero__wave" aria-hidden="true">
         <svg viewBox="0 0 1440 70" preserveAspectRatio="none">
-          <path d="M0,40 C360,80 1080,0 1440,40 L1440,70 L0,70 Z" fill="var(--bg-page)" />
+          <path
+            d="M0,40 C360,80 1080,0 1440,40 L1440,70 L0,70 Z"
+            fill="var(--bg-page)"
+          />
         </svg>
       </div>
     </section>
 
     <!-- ════════════ MAIN ════════════ -->
     <main class="svc-main" id="servicesMain">
-
       <!-- Loading skeleton -->
       <div class="svc-skeleton" id="svcSkeleton">
         <div class="skeleton-tab-row">
-          <div class="sk-pill"></div><div class="sk-pill"></div>
-          <div class="sk-pill"></div><div class="sk-pill"></div><div class="sk-pill"></div>
+          <div class="sk-pill"></div>
+          <div class="sk-pill"></div>
+          <div class="sk-pill"></div>
+          <div class="sk-pill"></div>
+          <div class="sk-pill"></div>
         </div>
         <div class="skeleton-grid">
-          <div class="sk-card"></div><div class="sk-card"></div>
-          <div class="sk-card"></div><div class="sk-card"></div>
-          <div class="sk-card"></div><div class="sk-card"></div>
+          <div class="sk-card"></div>
+          <div class="sk-card"></div>
+          <div class="sk-card"></div>
+          <div class="sk-card"></div>
+          <div class="sk-card"></div>
+          <div class="sk-card"></div>
         </div>
       </div>
 
       <!-- Error state -->
-      <div class="svc-error" id="svcError" style="display:none">
+      <div class="svc-error" id="svcError" style="display: none">
         <span class="svc-error__icon">⚠️</span>
         <h3>Could not load services</h3>
         <p id="svcErrorMsg">Please try again.</p>
@@ -70,10 +90,14 @@
       </div>
 
       <!-- Content (injected by JS) -->
-      <div class="svc-content" id="svcContent" style="display:none">
-
+      <div class="svc-content" id="svcContent" style="display: none">
         <!-- Filter tabs -->
-        <div class="svc-tabs" id="svcTabs" role="tablist" aria-label="Service categories"></div>
+        <div
+          class="svc-tabs"
+          id="svcTabs"
+          role="tablist"
+          aria-label="Service categories"
+        ></div>
 
         <!-- Services grid / table area -->
         <div class="svc-panels" id="svcPanels"></div>
@@ -84,18 +108,26 @@
             <span class="svc-cta__emoji">🧺</span>
             <div>
               <h2 class="svc-cta__title">Ready to place your order?</h2>
-              <p class="svc-cta__sub">Free pickup • 48-hour turnaround • Door-to-door delivery</p>
+              <p class="svc-cta__sub">
+                Free pickup • 48-hour turnaround • Door-to-door delivery
+              </p>
             </div>
             <a href="services.html" class="btn-book-now">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
               Book Pickup
             </a>
           </div>
         </div>
-
       </div>
       <!-- /svc-content -->
     </main>
@@ -107,8 +139,6 @@
     <script src="js/auth.js"></script>
     <script src="js/api.js"></script>
     <script src="js/services.js"></script>
-     <script src="js/header.js"></script>
-
-
+    <script src="js/header.js"></script>
   </body>
 </html>
