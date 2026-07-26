@@ -30,8 +30,8 @@
 }
 
 /* ══════════════════════════════
-     HEADER SHELL
-  ══════════════════════════════ */
+        HEADER SHELL
+     ══════════════════════════════ */
 .site-header {
     position: sticky;
     top: 0;
@@ -95,8 +95,8 @@
 }
 
 /* ══════════════════════════════
-     LOGO — left aligned, bigger image
-  ══════════════════════════════ */
+        LOGO — left aligned, bigger image
+     ══════════════════════════════ */
 .logo {
     margin-left: -120px;
     display: flex;
@@ -342,8 +342,8 @@
 }
 
 /* ══════════════════════════════
-     DESKTOP NAV
-  ══════════════════════════════ */
+        DESKTOP NAV
+     ══════════════════════════════ */
 .nav-links {
     display: flex;
     align-items: center;
@@ -449,8 +449,8 @@
 }
 
 /* ══════════════════════════════
-     HEADER ACTIONS
-  ══════════════════════════════ */
+        HEADER ACTIONS
+     ══════════════════════════════ */
 .header-actions {
     display: flex;
     align-items: center;
@@ -747,8 +747,8 @@
 }
 
 /* ══════════════════════════════
-     HAMBURGER
-  ══════════════════════════════ */
+        HAMBURGER
+     ══════════════════════════════ */
 .hamburger {
     display: none;
     flex-direction: column;
@@ -812,8 +812,8 @@
 }
 
 /* ══════════════════════════════
-     MOBILE MENU
-  ══════════════════════════════ */
+        MOBILE MENU
+     ══════════════════════════════ */
 .mobile-menu {
     display: none;
     flex-direction: column;
@@ -906,66 +906,12 @@
 }
 
 /* ══════════════════════════════
-     RESPONSIVE BREAKPOINTS
-  ══════════════════════════════ */
-/* ── Mobile logo overflow fix ── */
-@media (max-width: 960px) {
-    .logo {
-        margin-left: 0;
-        /* remove the -120px desktop offset */
-    }
-
-    .logo-img {
-        margin-left: -18px;
-        /* reduce negative bleed */
-        margin-top: -18px;
-        width: 90px;
-        height: 90px;
-    }
-
-    .logo-img-wrap {
-        width: 52px;
-        height: 52px;
-    }
-}
-
-@media (max-width: 640px) {
-    .logo {
-        margin-left: 0;
-    }
-
-    .logo-img {
-        margin-left: 3px;
-        margin-top: 3px;
-        width: 150px;
-        /* ← was 76px, make it bigger */
-        height: 160px;
-    }
-
-    .logo-img-wrap {
-        width: 78px;
-        height: 58px;
-    }
-}
-
-@media (max-width: 420px) {
-    .logo {
-        margin-left: 0;
-    }
-
-    .logo-img {
-        margin-left: -18px;
-        margin-top: -18px;
-        width: 100px;
-        /* ← was 66px, make it bigger */
-        height: 90px;
-    }
-
-    .logo-img-wrap {
-        width: 52px;
-        height: 52px;
-    }
-}
+        RESPONSIVE BREAKPOINTS
+        (logo sizing consolidated into ONE rule per
+        breakpoint — wrap/img always match, no more
+        negative-margin shift that was clipping the
+        logo on mobile)
+     ══════════════════════════════ */
 
 /* Tablet & Mobile — hide nav, push hamburger to RIGHT corner */
 @media (max-width: 960px) {
@@ -977,15 +923,27 @@
         display: none;
     }
 
-    /* hamburger: shown, pushed to the far right */
     .hamburger {
         display: flex;
         margin-left: auto;
     }
 
-    /* logo stays left — remove its auto right margin */
     .logo {
+        margin-left: 0;
         margin-right: 0;
+    }
+
+    .logo-img-wrap,
+    .logo-fallback {
+        width: 56px;
+        height: 56px;
+    }
+
+    .logo-img {
+        width: 56px;
+        height: 56px;
+        margin: 0;
+        border-radius: 14px;
     }
 }
 
@@ -998,10 +956,15 @@
     }
 
     .logo-img-wrap,
-    .logo-img,
     .logo-fallback {
-        width: 60px;
-        height: 60px;
+        width: 52px;
+        height: 52px;
+    }
+
+    .logo-img {
+        width: 52px;
+        height: 52px;
+        margin: 0;
     }
 
     .logo-main {
@@ -1022,20 +985,22 @@
     }
 
     .logo {
-
         gap: 10px;
     }
 
     .logo-img-wrap,
-    .logo-img,
     .logo-fallback {
+        width: 44px;
+        height: 44px;
+    }
 
-        width: 52px;
-        height: 52px;
+    .logo-img {
+        width: 44px;
+        height: 44px;
+        margin: 0;
     }
 
     .logo-main {
-
         font-size: 1.05rem;
     }
 
@@ -1054,8 +1019,8 @@
 }
 
 /* ══════════════════════════════
-     REDUCE MOTION
-  ══════════════════════════════ */
+        REDUCE MOTION
+     ══════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
 
     *,
