@@ -7,6 +7,8 @@
 # ============================================================
 
 import smtplib
+import socket
+import ssl
 import random
 import string
 from email.mime.multipart import MIMEMultipart
@@ -24,18 +26,58 @@ def generate_otp(length: int = 6) -> str:
     return "".join(random.choices(string.digits, k=length))
 
 
+def _create_ipv4_ssl_socket(host, port, timeout):
+    """
+    Open a TLS/SSL socket to (host, port), forcing IPv4.
+
+    Render's free tier does not properly route outbound IPv6 traffic.
+    smtp.gmail.com resolves to both an IPv4 and an IPv6 address, and the
+    default socket resolution can pick the IPv6 one — which then fails
+    with "[Errno 101] Network is unreachable" before authentication is
+    even attempted. Resolving explicitly with socket.AF_INET forces the
+    IPv4 address, which Render can actually route.
+    """
+    addr_info = socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_STREAM)
+    raw_sock = socket.socket(addr_info[0][0], addr_info[0][1], addr_info[0][2])
+    raw_sock.settimeout(timeout)
+    raw_sock.connect(addr_info[0][4])
+    context = ssl.create_default_context()
+    # server_hostname keeps TLS certificate verification checking against
+    # "smtp.gmail.com" even though we connected via its raw IPv4 address.
+    return context.wrap_socket(raw_sock, server_hostname=host)
+
+
 def _send(msg: MIMEMultipart) -> bool:
     """Internal SMTP sender. Returns True on success."""
     try:
-        # NOTE: timeout=10 added — without this, a slow/unreachable SMTP
-        # connection (common on Render's free tier) can hang indefinitely,
-        # which causes Gunicorn to force-kill the whole worker mid-request
-        # (SystemExit, 500, dropped connection). With a timeout set, a
-        # slow connection instead raises a normal exception that the
+        # NOTE: timeout=10 — without this, a slow/unreachable SMTP
+        # connection can hang indefinitely, which causes Gunicorn to
+        # force-kill the whole worker mid-request. With a timeout set,
+        # a slow connection instead raises a normal exception that the
         # caller can catch.
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10) as server:
+        #
+        # NOTE: IPv4 is forced via _create_ipv4_ssl_socket — Render's
+        # free tier fails outbound IPv6 with "Errno 101 Network is
+        # unreachable", which smtp.gmail.com's default DNS resolution
+        # can trigger. We open the socket ourselves and hand it to
+        # smtplib.SMTP_SSL instead of letting it connect on its own.
+        # No host passed here on purpose — smtplib auto-connects in
+        # __init__ as soon as a host is given, which would attempt (and
+        # fail on) the default IPv6-first resolution before we get a
+        # chance to swap in our own IPv4 socket below.
+        server = smtplib.SMTP_SSL(timeout=10)
+        server._host = "smtp.gmail.com"
+        server.sock = _create_ipv4_ssl_socket("smtp.gmail.com", 465, 10)
+        server.file = server.sock.makefile("rb")
+        code, _ = server.getreply()
+        if code != 220:
+            raise smtplib.SMTPConnectError(code, "Could not connect to smtp.gmail.com")
+        server.ehlo()
+        try:
             server.login(config.GMAIL_USER, config.GMAIL_APP_PASSWORD)
             server.send_message(msg)
+        finally:
+            server.close()
         return True
     except Exception as e:
         print(f"[Email] SMTP error: {e}")
